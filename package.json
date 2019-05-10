@@ -1,5 +1,5 @@
 {
-  "name": "vuecli3-template",
+  "name": "music-box",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,12 +7,25 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "better-scroll": "^0.1.15",
+    "babel-runtime": "^6.26.0",
     "core-js": "^2.6.5",
-    "vue": "^2.6.6"
+    "fastclick": "^1.0.6",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "vue-lazyload": "1.0.3",
+    "vue": "^2.6.6",
+    "vue-router": "^3.0.2",
+    "vuex": "^3.1.0",
+    "lyric-parser": "^1.0.1",
+    "jsonp": "0.2.1",
+    "good-storage": "^1.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",
     "@vue/cli-service": "^3.5.0",
+    "babel-polyfill": "^6.26.0",
     "vue-template-compiler": "^2.5.21"
   }
 }
