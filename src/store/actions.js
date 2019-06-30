@@ -105,7 +105,7 @@ export const deleteSong=({commit,state},song)=>{
   sequenceList.splice(sIndex,1)
 
   if(currentIndex>pIndex||currentIndex===playlist.length)currentIndex--
-  // commit("setPlayList", playlist);
+  commit("setPlayList", playlist);
   commit("setSequenceList", sequenceList);
   commit("setCurrentIndex", currentIndex);
   if(!playlist.length) commit("setPlayingState", false);
