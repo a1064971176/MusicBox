@@ -94,11 +94,12 @@
             <i @click.stop="togglePlaying" class="icon-mini" :class="miniIcon"></i>
           </progress-circle>
         </div>
-        <div class="control">
+        <div class="control" @click.stop="showPlaylist">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <playlist ref="Playlist"></playlist>
     <audio
       :src="currentSongUrl"
       ref="audio"
@@ -122,6 +123,7 @@ import Lyric from "lyric-parser";
 import Scroll from "@/base/scroll/scroll";
 import { truncate } from "fs";
 import { getLyric } from "@/service/getData";
+import Playlist from "@/components/playlist/playlist";
 
 const transform = prefixStyle("transform");
 const transitionDuration = prefixStyle("transitionDuration");
@@ -209,6 +211,10 @@ export default {
         y,
         scale
       };
+    },
+    //播放列表
+    showPlaylist(){
+      this.$refs.Playlist.show()
     },
     //歌词和播放界面切换
     middleTouchStart(e) {
@@ -487,7 +493,8 @@ export default {
   components: {
     progressBar,
     progressCircle,
-    Scroll
+    Scroll,
+    Playlist
   }
 };
 </script>
@@ -545,6 +552,9 @@ export default {
         text-align: center;
         font-size: $font-size-medium;
         color: $color-text;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
     }
     .middle {

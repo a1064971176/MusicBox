@@ -2,7 +2,7 @@
   <div class="rank" ref="rank">
     <scroll :data="topList" class="toplist" ref="toplist">
       <ul>
-        <li class="item" v-for="item in topList" :key="item.id" @click="selectItem(item)">
+        <li class="item" :data-idx='item.idx' v-for="item in topList" :key="item.id" @click="selectItem(item)">
           <div class="icon">
             <img width="60" height="66" v-lazy="item.coverImgUrl">
           </div>
@@ -46,7 +46,7 @@ export default {
     },
      selectItem(item){
       this.setTopList(item)
-       this.$router.push(`/rank/${item.idx}`)
+      this.$router.push(`/rank/${item.idx}`)
     },
     _getTopList() {
       getTopList().then(res => {

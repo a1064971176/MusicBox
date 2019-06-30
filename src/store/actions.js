@@ -3,16 +3,13 @@ import { playMode } from "@/assets/js/config.js";
 import { shuffle } from "@/assets/js/util.js";
 import { saveSearch,deleteSearch,clearSearch } from "@/assets/js/cache.js";
 
-// const actions = {
 
 function findIndex(list, song) {
-  // console.log(list,song)
   return list.findIndex(item => {
     return item.id === song.id;
   });
 }
 export const selectPlay = ({ commit, state }, { list, index }) => {
-  // console.log(list,index)
 
   commit("setSequenceList", list);
   if (state.mode === playMode.random) {
@@ -27,11 +24,12 @@ export const selectPlay = ({ commit, state }, { list, index }) => {
   commit("setFullScreen", true);
   commit("setPlayingState", true);
 
-  // console.log(list[index])
 };
+//全屏
 export const setFullScreen = ({ commit }, flag) => {
   commit("setFullScreen", flag);
 };
+//随机播放
 export const randomPlay = ({ commit }, { list }) => {
   commit("setPlayMode", playMode.random);
   commit("setSequenceList", list);
@@ -41,7 +39,7 @@ export const randomPlay = ({ commit }, { list }) => {
   commit("setFullScreen", true);
   commit("setPlayingState", true);
 };
-// }
+//插入 歌曲
 export const insertSong = ({ commit, state }, song) => {
   let playlist = state.playlist.slice();
   let sequenceList = state.sequenceList.slice();
@@ -82,13 +80,33 @@ export const insertSong = ({ commit, state }, song) => {
   commit("setFullScreen", true);
   commit("setPlayingState", true);
 };
-
+//保存搜索历史
 export const saveSearchHistory = ({commit},query) => {
   commit("setSearchHistory",saveSearch(query))
 };
+//删除搜索历史
 export const deleteSearchHistory = ({commit},query) => {
   commit("setSearchHistory",deleteSearch(query))
 };
+//清除搜索历史
 export const clearSearchHistory = ({commit}) => {
   commit("setSearchHistory",clearSearch())
 };
+//删除歌曲
+export const deleteSong=({commit,state},song)=>{
+  console.log(1)
+  let playlist = state.playlist.slice();
+  let sequenceList = state.sequenceList.slice();
+  let currentIndex = state.currentIndex;
+
+  let pIndex=findIndex(playlist,song)
+  playlist.splice(pIndex,1)
+  let sIndex=findIndex(sequenceList,song)
+  sequenceList.splice(sIndex,1)
+
+  if(currentIndex>pIndex||currentIndex===playlist.length)currentIndex--
+  // commit("setPlayList", playlist);
+  commit("setSequenceList", sequenceList);
+  commit("setCurrentIndex", currentIndex);
+  if(!playlist.length) commit("setPlayingState", false);
+}

@@ -28,6 +28,9 @@ const getters = {
             return null
         }
         
+    },
+    sequenceList:(state)=>{
+        return state.sequenceList
     }
    
 
