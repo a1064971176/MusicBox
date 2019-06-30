@@ -78,6 +78,13 @@ export default {
     },
     //选择歌曲
     selectItem(item, index) {
+      if (this.mode === playMode.random) {
+          index = this.playlist.findIndex((song) => {
+            return song.id === item.id
+          })
+        }
+        this.setCurrentIndex(index)
+        this.setPlayingState(true)
     },
     //滚动到当前播放项
     scrollToCurrent(current) {
