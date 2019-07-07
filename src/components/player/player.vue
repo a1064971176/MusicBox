@@ -9,7 +9,7 @@
     >
       <div class="normal-player" v-show="fullScreen">
         <div class="background">
-          <img alt width="100%" height="100%" :src="currentSongImg">
+          <img alt width="100%" height="100%" :src="currentSongImg" />
         </div>
         <div class="top">
           <div class="back" @click="back">
@@ -27,7 +27,7 @@
           <div class="middle-l" ref="middleL">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd" :class="cdCls">
-                <img alt class="image" :src="currentSongImg">
+                <img alt class="image" :src="currentSongImg" />
               </div>
             </div>
             <div class="playing-lyric-wrapper">
@@ -83,7 +83,7 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
         <div class="icon" :class="cdCls">
-          <img alt width="40" height="40" :src="currentSongImg">
+          <img alt width="40" height="40" :src="currentSongImg" />
         </div>
         <div class="text">
           <h2 class="name" v-html="currentSongName"></h2>
@@ -213,8 +213,8 @@ export default {
       };
     },
     //播放列表
-    showPlaylist(){
-      this.$refs.Playlist.show()
+    showPlaylist() {
+      this.$refs.Playlist.show();
     },
     //歌词和播放界面切换
     middleTouchStart(e) {
@@ -400,7 +400,6 @@ export default {
     getLyric(id) {
       getLyric(id)
         .then(res => {
-          // console.log(res.data.lrc.lyric)
           this.currentLyric = new Lyric(res.data.lrc.lyric, this.handleLyric);
           if (this.playing) {
             this.currentLyric.play();
@@ -408,8 +407,10 @@ export default {
           // console.log(this.currentLyric);
         })
         .catch(() => {
-          this.currentLyric = nullthis.playingLyric = "";
-          this.currentLineNume = 0;
+          if (nullthis) {
+            this.currentLyric = nullthis.playingLyric = "";
+            this.currentLineNume = 0;
+          }
         });
     },
     handleLyric({ lineNum, txt }) {
@@ -472,8 +473,8 @@ export default {
   },
   watch: {
     //监听音乐url变化  执行播放
-    currentSongUrl() {
-      // console.log(newSong,oldSong)
+    currentSongUrl(newUrl) {
+      if(!newUrl) return
       if (this.currentLyric) {
         this.currentLyric.stop();
       }

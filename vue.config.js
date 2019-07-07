@@ -1,7 +1,18 @@
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'development' ? '/' : '/demo',
+    publicPath: process.env.NODE_ENV === 'development' ? '/' : './',
     devServer: {
-        proxy: 'http://localhost:3000', // 开发环境的接口地址url
-        // proxy: 'http://music.kassing.cn', // 开发环境的接口地址url
+      proxy:{
+        "/":{
+            target:'http://localhost:3000',
+            ws: false,
+            changOrigin: true,
+            pathRequiresRewrite: {}
+        }
       }
-  }
+  },
+  chainWebpack:config=>{
+    config
+    .plugin('webpack-bundle-analyzer')
+    .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+}
+}

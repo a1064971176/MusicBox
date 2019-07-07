@@ -6,16 +6,16 @@
           <h1 class="title">
             <i class="icon"></i>
             <span class="text"></span>
-            <span class="clear">
+            <span class="clear" @click="showConfirm()">
               <i class="icon-clear"></i>
             </span>
           </h1>
         </div>
         <scroll :data="sequenceList" class="list-content" ref="listContent">
-          <ul>
+          <transition-group name="list" tag="ul">
             <li
               class="item"
-              v-for="(item,index) in sequenceList"
+              v-for="(item, index) in sequenceList"
               :key="item.id"
               @click="selectItem(item,index)"
               ref="lisrItem"
@@ -29,7 +29,7 @@
                 <i class="icon-delete"></i>
               </span>
             </li>
-          </ul>
+          </transition-group>
         </scroll>
         <div class="list-operate">
           <div class="add">
@@ -41,6 +41,7 @@
           <span>关闭</span>
         </div>
       </div>
+      <confirm ref="confirm" @confirm="confirmClear" text="是否清空播放列表" confirmBtnText="清空"></confirm>
     </div>
   </transition>
 </template>
@@ -50,6 +51,7 @@ import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
 import { playMode } from "@/assets/js/config.js";
 import Scroll from "@/base/scroll/scroll";
 import { setTimeout } from "timers";
+import Confirm from "@/base/confirm/confirm"
 export default {
   data() {
     return {
@@ -72,19 +74,20 @@ export default {
     //当前播放歌曲显示图标
     getCurrentIcon(item) {
       if (this.currentSongId === item.id) {
-          return 'icon-play'
-        }
-        return ''
+        return "icon-play";
+      }
+      return "";
     },
     //选择歌曲
     selectItem(item, index) {
       if (this.mode === playMode.random) {
-          index = this.playlist.findIndex((song) => {
-            return song.id === item.id
-          })
-        }
-        this.setCurrentIndex(index)
-        this.setPlayingState(true)
+        console.log(12)
+        index = this.playlist.findIndex(song => {
+          return song.id === item.id;
+        });
+      }
+      this.setCurrentIndex(index);
+      this.setPlayingState(true);
     },
     //滚动到当前播放项
     scrollToCurrent(current) {
@@ -95,13 +98,26 @@ export default {
     },
     //删除
     deleteOne(item) {
+      console.log(item)
       this.deleteSong(item);
+      if(!this.playlist.length) this.hide()
+    },
+    //显示确定框
+    showConfirm(){
+      console.log(1)
+      this.$refs.confirm.show()
+      console.log(2)
+    },
+    confirmClear(){
+      this.deleteSongList()
+      this.hide()
     },
     ...mapMutations(["setCurrentIndex", "setPlayingState"]),
-    ...mapActions(["deleteSong", "insertSong"])
+    ...mapActions(["deleteSong", "deleteSongList"])
   },
   watch: {
     currentSongId(newId, oldId) {
+      if(!newId) return
       if (!this.showFlag || newId === oldId) return;
       this.scrollToCurrent(newId);
     }
@@ -114,11 +130,12 @@ export default {
       "currentSongImg",
       "currentSonger",
       "currentSongId",
-      "sequenceList",
+      "sequenceList"
     ])
   },
   components: {
-    Scroll
+    Scroll,
+    Confirm
   }
 };
 </script>
