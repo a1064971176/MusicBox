@@ -27,6 +27,7 @@
     "@vue/cli-plugin-babel": "^3.5.0",
     "@vue/cli-service": "^3.8.4",
     "babel-polyfill": "^6.26.0",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }

@@ -94,19 +94,28 @@ export const clearSearchHistory = ({commit}) => {
 };
 //删除歌曲
 export const deleteSong=({commit,state},song)=>{
-  console.log(1)
   let playlist = state.playlist.slice();
   let sequenceList = state.sequenceList.slice();
   let currentIndex = state.currentIndex;
 
   let pIndex=findIndex(playlist,song)
   playlist.splice(pIndex,1)
+
   let sIndex=findIndex(sequenceList,song)
   sequenceList.splice(sIndex,1)
-
-  if(currentIndex>pIndex||currentIndex===playlist.length)currentIndex--
-  // commit("setPlayList", playlist);
+  if(pIndex==-1) return //阻止 删除列表最后一个  会调用两次 ???(为什么删最后一个调用两次)
+  if(currentIndex>pIndex||currentIndex===playlist.length){currentIndex--}
+  commit("setPlayList", playlist);
   commit("setSequenceList", sequenceList);
   commit("setCurrentIndex", currentIndex);
-  if(!playlist.length) commit("setPlayingState", false);
+  // commit("setPlayingState", false);
+  const setPlayingState=playlist.length>0
+  commit("setPlayingState", setPlayingState)
+}
+
+export const deleteSongList=({commit})=>{
+  commit("setPlayList", []);
+  commit("setSequenceList", []);
+  commit("setCurrentIndex", -1);
+  commit("setPlayingState", false)
 }

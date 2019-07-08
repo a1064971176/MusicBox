@@ -29,34 +29,42 @@ export const playlistMixin = {
 export const playerMixin = {
   computed: {
     iconMode() {
-      return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
+      return this.mode == playMode.sequence
+        ? "icon-sequence"
+        : this.mode == playMode.loop
+        ? "icon-loop"
+        : "icon-random";
     },
+    ...mapState(["playlist", "mode"]),
     ...mapGetters([
-      'sequenceList',
-      'playlist',
-      'currentSong',
-      'mode',
-      'favoriteList'
+      "currentSongUrl",
+      "currentSongName",
+      "currentSongImg",
+      "currentSonger",
+      "currentSongId",
+      "sequenceList"
     ])
   },
   methods: {
+    //改变播放模式
     changeMode() {
-      const mode = (this.mode + 1) % 3
-      this.setPlayMode(mode)
-      let list = null
+      const mode = (this.mode + 1) % 3;
+      this.setPlayMode(mode);
+      let list = null;
       if (mode === playMode.random) {
-        list = shuffle(this.sequenceList)
+        list = shuffle(this.sequenceList);
       } else {
-        list = this.sequenceList
+        list = this.sequenceList;
       }
-      this.resetCurrentIndex(list)
-      this.setPlaylist(list)
+      this.setPlayList(list);
+      this.rseetCurrentIndex(list);
     },
-    resetCurrentIndex(list) {
-      let index = list.findIndex((item) => {
-        return item.id === this.currentSong.id
-      })
-      this.setCurrentIndex(index)
+    rseetCurrentIndex(list) {
+      // console.log(list)
+      let index = list.findIndex((item, inde) => {
+        return item.id === this.currentSongId;
+      });
+      this.setCurrentIndex(index);
     },
     toggleFavorite(song) {
       if (this.isFavorite(song)) {
@@ -77,12 +85,13 @@ export const playerMixin = {
       })
       return index > -1
     },
-    ...mapMutations({
-      setPlayMode: 'SET_PLAY_MODE',
-      setPlaylist: 'SET_PLAYLIST',
-      setCurrentIndex: 'SET_CURRENT_INDEX',
-      setPlayingState: 'SET_PLAYING_STATE'
-    }),
+    ...mapMutations([
+      "setPlayingState",
+      // "setFullScreen",
+      "setCurrentIndex",
+      "setPlayMode",
+      "setPlayList"
+    ]),
     ...mapActions([
       'saveFavoriteList',
       'deleteFavoriteList'
@@ -93,28 +102,32 @@ export const playerMixin = {
 export const searchMixin = {
   data() {
     return {
-      query: '',
-      refreshDelay: 120
-    }
+      // showFlag: false,
+      query:''
+    };
   },
   computed: {
-    ...mapGetters([
-      'searchHistory'
-    ])
+    ...mapState(["searchHistory"])
   },
   methods: {
-    onQueryChange(query) {
-      this.query = query
+    addQuery(query) {
+      this.$refs.SearchBox.setQuery(query);
+    },
+    oneQueryChange(query) {
+      this.query = query;
     },
     blurInput() {
-      this.$refs.searchBox.blur()
-    },
-    addQuery(query) {
-      this.$refs.searchBox.setQuery(query)
+      this.$refs.SearchBox.blur();
     },
     saveSearch() {
-      this.saveSearchHistory(this.query)
+      this.saveSearchHistory(this.query);
     },
+    // addQuery(query) {
+    //   this.$refs.searchBox.setQuery(query)
+    // },
+    // saveSearch() {
+    //   this.saveSearchHistory(this.query)
+    // },
     ...mapActions([
       'saveSearchHistory',
       'deleteSearchHistory'

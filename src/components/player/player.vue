@@ -9,7 +9,7 @@
     >
       <div class="normal-player" v-show="fullScreen">
         <div class="background">
-          <img alt width="100%" height="100%" :src="currentSongImg">
+          <img alt width="100%" height="100%" :src="currentSongImg" />
         </div>
         <div class="top">
           <div class="back" @click="back">
@@ -27,7 +27,7 @@
           <div class="middle-l" ref="middleL">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd" :class="cdCls">
-                <img alt class="image" :src="currentSongImg">
+                <img alt class="image" :src="currentSongImg" />
               </div>
             </div>
             <div class="playing-lyric-wrapper">
@@ -83,7 +83,7 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
         <div class="icon" :class="cdCls">
-          <img alt width="40" height="40" :src="currentSongImg">
+          <img alt width="40" height="40" :src="currentSongImg" />
         </div>
         <div class="text">
           <h2 class="name" v-html="currentSongName"></h2>
@@ -118,17 +118,19 @@ import { prefixStyle } from "@/assets/js/dom.js";
 import progressBar from "@/base/progress-bar/progress-bar";
 import progressCircle from "@/base/progress-circle/progress-circle";
 import { playMode } from "@/assets/js/config.js";
-import { shuffle } from "@/assets/js/util.js";
+// import { shuffle } from "@/assets/js/util.js";
 import Lyric from "lyric-parser";
 import Scroll from "@/base/scroll/scroll";
 import { truncate } from "fs";
 import { getLyric } from "@/service/getData";
 import Playlist from "@/components/playlist/playlist";
 
+import { playerMixin } from "@/assets/js/mixin.js";
+
 const transform = prefixStyle("transform");
 const transitionDuration = prefixStyle("transitionDuration");
 export default {
-  // mixins: [playerMixin],
+  mixins: [playerMixin],
   data() {
     return {
       songReady: false,
@@ -213,8 +215,8 @@ export default {
       };
     },
     //播放列表
-    showPlaylist(){
-      this.$refs.Playlist.show()
+    showPlaylist() {
+      this.$refs.Playlist.show();
     },
     //歌词和播放界面切换
     middleTouchStart(e) {
@@ -377,30 +379,10 @@ export default {
         this.currentLyric.seek(currentTime * 1000);
       }
     },
-    //改变播放模式
-    changeMode() {
-      const mode = (this.mode + 1) % 3;
-      this.setPlayMode(mode);
-      let list = null;
-      if (mode === playMode.random) {
-        list = shuffle(this.sequenceList);
-      } else {
-        list = this.sequenceList;
-      }
-      this.setPlayList(list);
-      this.rseetCurrentIndex(list);
-    },
-    rseetCurrentIndex(list) {
-      // console.log(list)
-      let index = list.findIndex((item, inde) => {
-        return item.id === this.currentSongId;
-      });
-      this.setCurrentIndex(index);
-    },
+    
     getLyric(id) {
       getLyric(id)
         .then(res => {
-          // console.log(res.data.lrc.lyric)
           this.currentLyric = new Lyric(res.data.lrc.lyric, this.handleLyric);
           if (this.playing) {
             this.currentLyric.play();
@@ -408,8 +390,10 @@ export default {
           // console.log(this.currentLyric);
         })
         .catch(() => {
-          this.currentLyric = nullthis.playingLyric = "";
-          this.currentLineNume = 0;
+          if (nullthis) {
+            this.currentLyric = nullthis.playingLyric = "";
+            this.currentLineNume = 0;
+          }
         });
     },
     handleLyric({ lineNum, txt }) {
@@ -424,11 +408,11 @@ export default {
       this.playingLyric = txt;
     },
     ...mapMutations([
-      "setPlayingState",
+      // "setPlayingState",
       "setFullScreen",
-      "setCurrentIndex",
-      "setPlayMode",
-      "setPlayList"
+      // "setCurrentIndex",
+      // "setPlayMode",
+      // "setPlayList"
     ])
   },
   computed: {
@@ -441,13 +425,6 @@ export default {
     miniIcon() {
       return this.playing ? "icon-pause-mini" : "icon-play-mini";
     },
-    iconMode() {
-      return this.mode == playMode.sequence
-        ? "icon-sequence"
-        : this.mode == playMode.loop
-        ? "icon-loop"
-        : "icon-random";
-    },
     disableCls() {
       return this.songReady ? "" : "disable";
     },
@@ -456,24 +433,24 @@ export default {
     },
     ...mapState([
       "fullScreen",
-      "playlist",
+      // "playlist",
       "playing",
       "currentIndex",
-      "mode",
-      "sequenceList"
+      // "mode",
+      // "sequenceList"
     ]),
     ...mapGetters([
-      "currentSongUrl",
-      "currentSongName",
-      "currentSongImg",
-      "currentSonger",
-      "currentSongId"
+      // "currentSongUrl",
+      // "currentSongName",
+      // "currentSongImg",
+      // "currentSonger",
+      // "currentSongId"
     ])
   },
   watch: {
     //监听音乐url变化  执行播放
-    currentSongUrl() {
-      // console.log(newSong,oldSong)
+    currentSongUrl(newUrl) {
+      if(!newUrl) return
       if (this.currentLyric) {
         this.currentLyric.stop();
       }
