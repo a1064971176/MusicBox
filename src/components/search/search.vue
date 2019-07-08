@@ -46,25 +46,24 @@ import Confirm from "@/base/confirm/confirm";
 import Suggest from "@/components/suggest/suggest";
 import Scroll from "@/base/scroll/scroll";
 import { getHotSearch } from "@/service/getData.js";
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 import { setTimeout } from "timers";
-import { playlistMixin } from "@/assets/js/mixin.js";
+import { playlistMixin,searchMixin } from "@/assets/js/mixin.js";
 export default {
-  mixins: [playlistMixin],
+  mixins: [playlistMixin,searchMixin],
   created() {
     this._getHotSearch();
   },
   data() {
     return {
       hotKey: [],
-      query: ""
+      // query: ""
     };
   },
   computed: {
     shortcut() {
       return this.hotKey.concat(this.searchHistory);
     },
-    ...mapState(["searchHistory"])
   },
   methods: {
     handlePlaylist(playlist) {
@@ -74,20 +73,20 @@ export default {
       this.$refs.searchResult.style.bottom = bottom;
       this.$refs.suggest.refresh()
     },
-    addQuery(query) {
-      // console.log(query)
-      // this.query=query
-      this.$refs.SearchBox.setQuery(query);
-    },
-    oneQueryChange(query) {
-      this.query = query;
-    },
-    blurInput() {
-      this.$refs.SearchBox.blur();
-    },
-    saveSearch() {
-      this.saveSearchHistory(this.query);
-    },
+    // addQuery(query) {
+    //   // console.log(query)
+    //   // this.query=query
+    //   this.$refs.SearchBox.setQuery(query);
+    // },
+    // oneQueryChange(query) {
+    //   this.query = query;
+    // },
+    // blurInput() {
+    //   this.$refs.SearchBox.blur();
+    // },
+    // saveSearch() {
+    //   this.saveSearchHistory(this.query);
+    // },
     showConfirm() {
       this.$refs.confirm.show();
     },
@@ -100,8 +99,8 @@ export default {
       });
     },
     ...mapActions([
-      "saveSearchHistory",
-      "deleteSearchHistory",
+      // "saveSearchHistory",
+      // "deleteSearchHistory",
       "clearSearchHistory"
     ])
   },

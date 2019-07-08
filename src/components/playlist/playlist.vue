@@ -4,8 +4,8 @@
       <div class="list-wrapper" @click.stop>
         <div class="list-header">
           <h1 class="title">
-            <i class="icon"></i>
-            <span class="text"></span>
+            <i class="icon" :class="iconMode" @click="changeMode"></i>
+            <span class="text">{{modeText}}</span>
             <span class="clear" @click="showConfirm()">
               <i class="icon-clear"></i>
             </span>
@@ -32,7 +32,7 @@
           </transition-group>
         </scroll>
         <div class="list-operate">
-          <div class="add">
+          <div class="add" @click="addSong">
             <i class="icon-add"></i>
             <span class="text">添加歌曲到队列</span>
           </div>
@@ -42,6 +42,7 @@
         </div>
       </div>
       <confirm ref="confirm" @confirm="confirmClear" text="是否清空播放列表" confirmBtnText="清空"></confirm>
+      <add-song ref="addSong"></add-song>
     </div>
   </transition>
 </template>
@@ -51,8 +52,13 @@ import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
 import { playMode } from "@/assets/js/config.js";
 import Scroll from "@/base/scroll/scroll";
 import { setTimeout } from "timers";
-import Confirm from "@/base/confirm/confirm"
+import Confirm from "@/base/confirm/confirm";
+import AddSong from "@/components/add-song/add-song";
+
+import { playerMixin } from "@/assets/js/mixin.js";
+
 export default {
+  mixins: [playerMixin],
   data() {
     return {
       showFlag: false
@@ -112,7 +118,10 @@ export default {
       this.deleteSongList()
       this.hide()
     },
-    ...mapMutations(["setCurrentIndex", "setPlayingState"]),
+    addSong(){
+      this.$refs.addSong.show()
+    },
+    // ...mapMutations(["setCurrentIndex", "setPlayingState"]),
     ...mapActions(["deleteSong", "deleteSongList"])
   },
   watch: {
@@ -123,19 +132,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(["playlist", "mode"]),
-    ...mapGetters([
-      "currentSongUrl",
-      "currentSongName",
-      "currentSongImg",
-      "currentSonger",
-      "currentSongId",
-      "sequenceList"
-    ])
+    modeText(){
+      return this.mode===playMode.sequence?'顺序播放':this.mode===playMode.random?'随即将播放':'单曲循环'
+    }
   },
   components: {
     Scroll,
-    Confirm
+    Confirm,
+    AddSong
   }
 };
 </script>
