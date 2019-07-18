@@ -36,7 +36,7 @@
 import Loading from "@/base/loading/loading";
 import Scroll from "@/base/scroll/scroll";
 import { getSingerList } from "@/service/getData.js";
-import { mapMutations } from "vuex";
+import { mapState,mapGetters, mapMutations, mapActions} from 'vuex'
 import { playlistMixin } from "@/assets/js/mixin.js";
 import { setTimeout } from "timers";
 
@@ -90,9 +90,9 @@ export default {
           }
           // this.showLoading=false
         });
-    }
+    },
+  ...mapMutations(["setSinger"]),
   },
-  ...mapMutations(['setSinger']),
   components: {
     Scroll,
     Loading

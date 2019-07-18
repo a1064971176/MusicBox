@@ -11,7 +11,8 @@ import MusicList from '@/components/music-list/music-list'
 export default {
     data() {
         return {
-            songs:[]
+            songs:[],
+            reqId:'7f15b5e0-a95e-11e9-8b1a-490cc445c4c3'
         }
     },
     computed:{
@@ -19,7 +20,7 @@ export default {
             return this.$store.state.singer.name
         },
         bgImage(){
-            return this.$store.state.singer.img1v1Url
+            return this.$store.state.singer.pic300
         },
         ...mapGetters({
             // singer
@@ -29,13 +30,21 @@ export default {
         this.setSinger(this.$store.state.singer)
     },
     methods:{
+        //获取歌手单曲
         setSinger(singer){
             if(!singer.id){
-                 this.$router.push('/singer')
-          return
+                this.$router.push('/singer')
+                return
             }
-             _setSinger(singer.id).then(res=>{
-            this.songs=res.data.hotSongs
+            let data={
+                artistid:singer.id,
+                pn:1,
+                rn:30,
+                reqId:this.reqId
+            }
+             _setSinger(data).then(res=>{
+            this.songs=res.data.data.list
+            this.reqId=res.data.reqId
                 //  console.log(this.songs)
 
         })

@@ -12,7 +12,7 @@ export const getSingerList = (data) => axios.get('/api/www/artist/artistInfo',{p
 //获取排行榜
 export const getTopList = () => axios.get('/toplist/detail')
 //获取歌手单曲
-export const _setSinger = (id) => axios.get('/artists', {params: {id}})
+export const _setSinger = (data) => axios.get('/api/www/artist/artistMusic', {params:{...data}})
 //获取歌曲url
 // export const getMusic = (id) => axios.get('/song/url', {params: {id}})
 //获取歌词
