@@ -2,12 +2,18 @@ module.exports = {
     publicPath: process.env.NODE_ENV === 'development' ? '/' : './',
     devServer: {
       proxy:{
-        "/":{
-            target:'http://localhost:3000',
+        "/api":{
+            target:'http://www.kuwo.cn',
             ws: false,
             changOrigin: true,
             pathRequiresRewrite: {}
-        }
+        },
+        "/api":{
+          target:'http://www.kuwo.cn',
+          ws: false,
+          changOrigin: true,
+          pathRequiresRewrite: {}
+      }
       }
   },
   chainWebpack:config=>{

@@ -10,7 +10,7 @@
       <ul>
         <li class="item" v-for="item in singers" :key="item.id" @click="selectSinger(item)">
           <div class="icon">
-            <img height="60" v-lazy="item.picUrl">
+            <img height="60" v-lazy="item.pic70">
           </div>
           <div class="text">
             <h2 class="name">{{item.name}}</h2>
@@ -46,10 +46,11 @@ export default {
   data() {
     return {
       singers: [],
-      limit: 30,
-      page: 0,
+      limit: 100,
+      page: 1,
       pullup: true,
-      showMore: true
+      showMore: true,
+      reqId:'fefe3260-a93a-11e9-87f1-fdc693fc7a5a'
     };
   },
   created() {
@@ -66,16 +67,22 @@ export default {
     },
     selectSinger(singer) {
       this.$router.push(`/singer/${singer.id}`);
-      //   this.setsinger(singer);
-      this.$store.commit("setSinger", singer);
+      this.setSinger(singer);
+      // this.$store.commit("setSinger", singer);
     },
     _getSingerList() {
-      let offset = this.page * this.limit;
+      let data={
+        category:0,
+        pn:this.page,  
+        rn:this.limit,
+        reqId:this.reqId
+      }
+      // let offset = this.page * this.limit;
       // this.showLoading = true;
-      getSingerList(offset, this.limit).then(res => {
+      getSingerList(data).then(res => {
           if (res.data.code === 200) {
-            this.singers.push(...res.data.artists);
-            if (res.data.artists.length == this.limit) {
+            this.singers.push(...res.data.data.artistList);
+            if (res.data.data.total > this.limit*this.page) {
               this.page++;
             } else {
               this.showMore = false;
@@ -85,9 +92,7 @@ export default {
         });
     }
   },
-  ...mapMutations({
-    setsinger: "SET_SINGER"
-  }),
+  ...mapMutations(['setSinger']),
   components: {
     Scroll,
     Loading

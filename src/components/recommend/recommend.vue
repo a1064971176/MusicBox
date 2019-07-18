@@ -6,7 +6,7 @@
           <slider>
             <div v-for="(item, index) in banners" :key="index">
               <a :href="item.url">
-                <img class="needsclick" :src="item.imageUrl" @load="loadImage">
+                <img class="needsclick" :src="item.pic" @load="loadImage">
               </a>
             </div>
           </slider>
@@ -16,11 +16,11 @@
           <ul>
             <li v-for="(item, index) in discList" :key="index" class="item" @click="selectItem(item)">
               <div class="icon">
-                <img v-lazy="item.picUrl" alt width="60" height="66">
+                <img v-lazy="item.img" alt width="60" height="66">
               </div>
               <div class="text">
                 <h2 class="name">{{item.name}}</h2>
-                <p class="desc">{{descriptionSlice(item.copywriter)}}</p>
+                <p class="desc">{{item.info}}</p>
               </div>
             </li>
           </ul>
@@ -46,7 +46,8 @@ export default {
   data() {
     return {
       banners: [],
-      discList: []
+      discList: [],
+      reqId:"b94ae990-a3c5-11e9-94a9-6f41d3eb5db3"
     };
   },
   created() {
@@ -65,27 +66,43 @@ export default {
       this.setDisc(item)
       this.$router.push(`/recommend/${item.id}`)
     },
-    descriptionSlice(cont) {
-      if (cont.indexOf("编辑") !== -1) {
-        return cont.slice(5);
-      } else {
-        return cont;
-      }
-    },
+    //处理字符串
+    // descriptionSlice(cont) {
+    //   if (cont.indexOf("编辑") !== -1) {
+    //     return cont.slice(5);
+    //   } else {
+    //     return cont;
+    //   }
+    // },
+    
+    //获取banner
     _getRecommend() {
-      getRecommend().then(res => {
+      let data={
+        reqId:this.reqId
+      }
+      getRecommend(data).then(res => {
         if (res.data.code === 200) {
-          this.banners = res.data.banners;
+          this.banners = res.data.data;
+          this.reqId=res.data.reqId
         }
       });
     },
+
+    //获取每日推荐
     _getDiscList() {
-      getDiscList().then(res => {
+      let data={
+        loginUid:0,
+        reqId:this.reqId
+      }
+      getDiscList(data).then(res => {
         if (res.data.code === 200) {
-          this.discList = res.data.result;
+          this.discList = res.data.data.list;
+          this.reqId=res.data.reqId
         }
       });
     },
+
+    //
     loadImage() {
       if (!this.checkloaded) {
         this.$refs.scroll.refresh();

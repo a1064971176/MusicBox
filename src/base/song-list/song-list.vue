@@ -7,7 +7,7 @@
         </div>
         <div class="content">
           <h2 class="name">{{song.name}}</h2>
-          <p class="desc">{{desc(song)}}</p>
+          <p class="desc">{{song.artist}}</p>
         </div>
       </li>
     </ul>
@@ -30,13 +30,15 @@ export default {
     selectItem(list, index) {
       this.$emit("select", { list, index });
     },
-    desc(song) {
-      return song.ar
-        .map(val => val.name)
-        .reduce((a, b) => {
-          return a + " - " + b;
-        });
-    },
+
+    //处理字符串(数组累加)
+    // desc(song) {
+    //   return song.ar
+    //     .map(val => val.name)
+    //     .reduce((a, b) => {
+    //       return a + " - " + b;
+    //     });
+    // },
     getRankCls(index) {
       if (index <= 2) {
         return `icon icon${index}`;

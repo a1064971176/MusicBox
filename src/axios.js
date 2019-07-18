@@ -1,6 +1,6 @@
 import axios from 'axios'
 import router from '@/router/index'
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '' : 'http://localhost:3000'
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '' : 'http://www.kuwo.cn'
 
 // 添加请求拦截器
 // axios.interceptors.request.use((config)=>{

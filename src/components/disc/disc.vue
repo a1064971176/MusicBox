@@ -12,7 +12,8 @@ import { getSongList } from "@/service/getData.js";
 export default {
   data() {
     return {
-      songs: []
+      songs: [],
+      reqId:'b0aeb760-a90d-11e9-ab0a-f511ed1676be',
     };
   },
   computed: {
@@ -20,7 +21,7 @@ export default {
       return this.disc.name;
     },
     bgImage() {
-      return this.disc.picUrl;
+      return this.disc.img700;
     },
     ...mapState(["disc"])
   },
@@ -34,8 +35,17 @@ export default {
         this.$router.push("/recommend");
         return;
       }
-      getSongList(disc.id).then(res => {
-            if(res.data.code===200)this.songs=res.data.playlist.tracks
+      let data={
+        pid:disc.id,
+        pn:1,
+        rn:30,
+        reqId:this.reqId
+      }
+      getSongList(data).then(res => {
+            if(res.data.code===200){
+              this.songs=res.data.data.musicList
+              this.reqId=res.data.reqId
+              }
         // console.log(this.songs);
       });
     }
@@ -48,15 +58,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/css/variable.scss';
-// .singer-detail{
-//     position: fixed;
-//     z-index: 100;
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-//     background-color: $color-background
-// }
  .slide-enter-active, .slide-leave-active{
     transition: all 0.3s}
 

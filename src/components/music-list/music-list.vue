@@ -26,7 +26,7 @@
 </template>
 
 <script>
- import Loading from '@/base/loading/loading'
+import Loading from '@/base/loading/loading'
 import Scroll from "@/base/scroll/scroll";
 import SongList from "@/base/song-list/song-list";
 import {prefixStyle} from "@/assets/js/dom.js";
