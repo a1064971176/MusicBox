@@ -11,11 +11,11 @@
             <ul>
               <li
                 class="item"
-                @click="addQuery(item.first)"
+                @click="addQuery(item)"
                 v-for="(item, index) in hotKey"
                 :key="index"
               >
-                <span>{{item.first}}</span>
+                <span>{{item}}</span>
               </li>
             </ul>
           </div>
@@ -57,6 +57,7 @@ export default {
   data() {
     return {
       hotKey: [],
+      reqId: "3c256dc0-ade6-11e9-8d18-1dc2924f4baf"
       // query: ""
     };
   },
@@ -91,9 +92,14 @@ export default {
       this.$refs.confirm.show();
     },
     _getHotSearch() {
-      getHotSearch().then(res => {
+       let data = {
+        key:this.query||'',
+        reqId: this.reqId
+      };
+      getHotSearch(data).then(res => {
         if (res.data.code === 200) {
-          this.hotKey = res.data.result.hots;
+          this.hotKey = res.data.data;
+          this.reqId=res.data.reqId
         }
         // console.log(res)
       });

@@ -13,7 +13,7 @@ export default {
   props: {
     placeholder: {
       type: String,
-      default: "搜索歌曲、歌手"
+      default: "搜索音乐/MV/歌单/歌手"
     }
   },
   data() {

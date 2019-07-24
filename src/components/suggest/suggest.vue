@@ -6,7 +6,7 @@
           <i class="icon-music"></i>
         </div>
         <div class="name">
-          <p class="text">{{item.name}} - {{desc(item)}}</p>
+          <p class="text">{{item.name}} - {{item.artist}}</p>
         </div>
       </li>
       <li>
@@ -36,12 +36,13 @@ export default {
   data() {
     return {
       limit: 30,
-      page: 0,
-      type: 1, //1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频
+      page: 1,
+      // type: 1, //1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频
       result: [],
       pullup: true, //下拉加载
       beforeScroll:true,//监听beforeScroll事件
-      hasMore: true
+      hasMore: true,
+      reqId: "d27a1da0-adf2-11e9-af26-5d25fa2f5411"
     };
   },
   // showSinger: {
@@ -50,22 +51,22 @@ export default {
   // },
   methods: {
     _search() {
-      this.page = 0;
+      this.page = 1;
       this.result=[];
       this.hasMore = true;
       this.$refs.suggest.scrollTo(0,0)
-      let item = {
-        keywords: this.query,
-        type: this.type,
-        limit: this.limit,
-        offset: this.page * this.limit
+      let data = {
+        key: this.query,
+        pn:this.page,
+        rn:this.limit,
+        reqid:this.reqid
       };
-      if (item.keywords.length) {
-        search(item).then(res => {
+      if (data.key.length) {
+        search(data).then(res => {
           if (res.data.code === 200) {
-            this.result = res.data.result.songs||[];
-            if(res.data.result.songCount==0)return this.hasMore = false;
-            if (res.data.result.songs.length < this.limit) this.hasMore = false;
+            this.result = res.data.data.list||[];
+            if(res.data.data.total==0)return this.hasMore = false;
+            if (res.data.data.total < this.limit) this.hasMore = false;
           }
         });
       }
@@ -76,16 +77,16 @@ export default {
       }
       this.page++;
       let item = {
-        keywords: this.query,
-        type: this.type,
-        limit: this.limit,
-        offset: this.page * this.limit
+         key: this.query,
+        pn:this.page,
+        rn:this.limit,
+        reqid:this.reqid
       };
-      if (item.keywords.length) {
+      if (item.key.length) {
         search(item).then(res => {
           if (res.data.code === 200) {
-            this.result = this.result.concat(res.data.result.songs);
-            if (res.data.result.songs.length < this.limit) this.hasMore = false;
+            this.result = this.result.concat(res.data.data.list);
+            if (res.data.data.total < this.page*this.limit) this.hasMore = false;
           }
         });
       }
@@ -96,13 +97,13 @@ export default {
     listScroll(){
       this.$emit("listScroll")
     },
-    desc(song) {
-      return song.artists
-        .map(val => val.name)
-        .reduce((a, b) => {
-          return a + " / " + b;
-        });
-    },
+    // desc(song) {
+    //   return song.artists
+    //     .map(val => val.name)
+    //     .reduce((a, b) => {
+    //       return a + " / " + b;
+    //     });
+    // },
     selectItem(item){
       getSong(item.id).then((res)=>{
         if(res.data.code===200){
