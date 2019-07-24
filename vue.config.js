@@ -8,8 +8,8 @@ module.exports = {
             changOrigin: true,
             pathRequiresRewrite: {}
         },
-        "/api":{
-          target:'http://www.kuwo.cn',
+        "/":{
+          target:'http://localhost:3000',
           ws: false,
           changOrigin: true,
           pathRequiresRewrite: {}
