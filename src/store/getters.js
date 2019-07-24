@@ -6,29 +6,27 @@ const getters = {
         
     },
     currentSongId: (state, getters) => {
-        return getters.currentSong.id 
+        return getters.currentSong.rid 
     },
     currentSongName: (state, getters) => {
         return getters.currentSong.name || null
     },
     currentSongImg: (state, getters) => {
-        if(getters.currentSong.al)
-        return getters.currentSong.al.picUrl || null
+        // if(getters.currentSong.al)
+        return getters.currentSong.pic || null
     },
     currentSonger: (state, getters) => {
-        if(getters.currentSong.ar)
-        return getters.currentSong.ar.map(val => val.name).reduce((a, b) => {
-          return a + " - " + b;
-        })||null;
+        // if(getters.currentSong.ar)
+        return getters.currentSong.artist||null;
     },
-    currentSongUrl: (state, getters) => {
-        if (getters.currentSongId) {
-            return `https://music.163.com/song/media/outer/url?id=${getters.currentSongId}.mp3`
-        }else{
-            return null
-        }
+    // currentSongUrl: (state, getters) => {
+    //     if (getters.currentSongId) {
+    //         return `https://music.163.com/song/media/outer/url?id=${getters.currentSongId}.mp3`
+    //     }else{
+    //         return null
+    //     }
         
-    },
+    // },
     sequenceList:(state)=>{
         return state.sequenceList
     }

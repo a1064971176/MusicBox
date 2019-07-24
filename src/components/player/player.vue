@@ -140,7 +140,8 @@ export default {
       currentLyric: null,
       currentLineNume: 0,
       currentShow: "cd",
-      playingLyric: ""
+      playingLyric: "",
+      currentSongUrl:""
     };
   },
   created() {

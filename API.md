@@ -262,6 +262,25 @@
 
    /api/www/bang/bang/musicList?bangId=93&pn=1&rn=30&reqId=579d3940-ae02-11e9-af26-5d25fa2f5411
 
+## 歌曲url
+
+* 接口地址
+
+    /url
+
+* 参数
+
+    format=mp3
+    rid=72301272
+    response=url
+    type=convert_url3
+    br=128kmp3
+    from=web
+    t=1563981121318
+
+* 调用例子
+
+   /url?format=mp3&rid=72301272&response=url&type=convert_url3&br=128kmp3&from=web&t=1563981121318&reqId=63387c61-ae25-11e9-b5b6-b141ccac119d
 
 
 推荐歌手(华语):http://www.kuwo.cn/api/www/radio/index/radioList?reqId=6573f0e0-a3c6-11e9-94a9-6f41d3eb5db3

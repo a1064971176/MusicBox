@@ -18,7 +18,7 @@ export const _setSinger = (data) => axios.get('/api/www/artist/artistMusic', {pa
 //获取歌词
 export const getLyric = (id) => axios.get('/lyric', {params: {id}})
 //获取排行榜详情
-export const getMusicList=(data)=>axios.get('/top/list',{params:{idx}})
+export const getMusicList=(data)=>axios.get('/api/www/bang/bang/musicList',{params:{...data}})
 //获取热搜
 export const getHotSearch=(data)=>axios.get('/api/www/search/searchKey', {params:{...data}})
 

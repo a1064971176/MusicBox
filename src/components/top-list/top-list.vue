@@ -21,9 +21,10 @@ export default {
     },
     bgImage() {
        if (this.songs.length) {
-          return this.songs[0].al.picUrl
+          return this.songs[0].pic
+          // return this.topList.pic
         }
-        return ''
+          return this.topList.pic
     },
     ...mapState(["topList"])
   },
@@ -32,14 +33,21 @@ export default {
   },
   methods: {
     _getTopList() {
-      if (!(this.topList.idx+1)) {
+      if (!this.topList.sourceid) {
         this.$router.push("/rank");
         return;
       }
-      getMusicList(this.topList.idx).then(res => {
+      let data = {
+        bangId:this.topList.sourceid,
+        pn:1,
+        rn:30,
+        reqId: this.reqId
+      };
+      getMusicList(data).then(res => {
         // console.log(res);
         if (res.data.code === 200) {
-          this.songs = res.data.playlist.tracks;
+          this.songs = res.data.data.musicList;
+          this.reqId = res.data.reqId
         }
       });
     }
