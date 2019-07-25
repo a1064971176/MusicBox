@@ -19,14 +19,15 @@ const getters = {
         // if(getters.currentSong.ar)
         return getters.currentSong.artist||null;
     },
-    // currentSongUrl: (state, getters) => {
-    //     if (getters.currentSongId) {
-    //         return `https://music.163.com/song/media/outer/url?id=${getters.currentSongId}.mp3`
-    //     }else{
-    //         return null
-    //     }
+    currentSongUrl: (state, getters) => {
+        // if (getters.currentSongId) {
+        //     return `https://music.163.com/song/media/outer/url?id=${getters.currentSongId}.mp3`
+        // }else{
+        //     return null
+        // }
+        return state.musicUrl||""
         
-    // },
+    },
     sequenceList:(state)=>{
         return state.sequenceList
     }

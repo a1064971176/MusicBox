@@ -282,6 +282,36 @@
 
    /url?format=mp3&rid=72301272&response=url&type=convert_url3&br=128kmp3&from=web&t=1563981121318&reqId=63387c61-ae25-11e9-b5b6-b141ccac119d
 
+## 歌曲信息
+
+* 接口地址
+
+    /api/www/music/musicInfo
+
+* 参数
+
+    mid=69284035
+    
+
+* 调用例子
+
+   /api/www/music/musicInfo?mid=69284035&reqId=32779950-aea0-11e9-bded-712fbe598268
+
+## 歌词
+
+* 接口地址
+
+    /newh5/singles/songinfoandlrc
+
+* 参数
+
+    musicId=69284035
+    
+
+* 调用例子
+
+   /newh5/singles/songinfoandlrc?musicId=69284035&reqId=d10600b0-aea1-11e9-98b2-0706e76ce349
+
 
 推荐歌手(华语):http://www.kuwo.cn/api/www/radio/index/radioList?reqId=6573f0e0-a3c6-11e9-94a9-6f41d3eb5db3
 

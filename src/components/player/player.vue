@@ -43,7 +43,7 @@
                   :class="{'current':currentLineNume===index}"
                   v-for="(line,index) in currentLyric.lines"
                   :key="index"
-                >{{line.txt}}</p>
+                >{{line.lineLyric}}</p>
               </div>
             </div>
           </scroll>
@@ -119,7 +119,7 @@ import progressBar from "@/base/progress-bar/progress-bar";
 import progressCircle from "@/base/progress-circle/progress-circle";
 import { playMode } from "@/assets/js/config.js";
 // import { shuffle } from "@/assets/js/util.js";
-import Lyric from "lyric-parser";
+import Lyric from "@/assets/js/lyric.js";
 import Scroll from "@/base/scroll/scroll";
 import { truncate } from "fs";
 import { getLyric } from "@/service/getData";
@@ -141,7 +141,8 @@ export default {
       currentLineNume: 0,
       currentShow: "cd",
       playingLyric: "",
-      currentSongUrl:""
+      reqId:"32779950-aea0-11e9-bded-712fbe598268"
+      // currentSongUrl:""
     };
   },
   created() {
@@ -332,6 +333,7 @@ export default {
         let index = this.currentIndex + 1;
         if (index === this.playlist.length) index = 0; //超过列表长度后重置
         this.setCurrentIndex(index);
+        
         if (!this.playing) this.togglePlaying(); //如果为暂停状态,改为播放状态
         this.songReady = false; //将状态改为不可点击
       }
@@ -382,19 +384,27 @@ export default {
     },
     
     getLyric(id) {
-      getLyric(id)
+      let data={
+        musicId:id,
+        reqid:this.reqId
+      }
+      getLyric(data)
         .then(res => {
-          this.currentLyric = new Lyric(res.data.lrc.lyric, this.handleLyric);
+          let newlyc=res.data.data.lrclist.map(val=>{
+            val.time=val.time*1000
+            return val
+          })
+          this.currentLyric = new Lyric(newlyc, this.handleLyric);
           if (this.playing) {
             this.currentLyric.play();
           }
           // console.log(this.currentLyric);
         })
         .catch(() => {
-          if (nullthis) {
-            this.currentLyric = nullthis.playingLyric = "";
-            this.currentLineNume = 0;
-          }
+          // if (nullthis) {
+          //   this.currentLyric = nullthis.playingLyric = "";
+          //   this.currentLineNume = 0;
+          // }
         });
     },
     handleLyric({ lineNum, txt }) {

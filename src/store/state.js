@@ -14,7 +14,8 @@ const state = {
     searchHistory: loadSearch(),
     // searchHistory: [],
     playHistory: loadPlay(),
-    favoriteList: loadFavorite()
+    favoriteList: loadFavorite(),
+    musicUrl:""
     
 }
 export default state

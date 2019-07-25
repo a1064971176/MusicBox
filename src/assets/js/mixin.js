@@ -27,14 +27,14 @@ export const playlistMixin = {
 }
 
 export const playerMixin = {
-  watch:{
-    currentSongId(newId,oldId){
-      console.log(newId,oldId)
-      if(newId!=oldId){
-        this.getCurrentSongUrl()
-      }
-    }
-  },
+  // watch:{
+  //   currentSongId(newId,oldId){
+  //     console.log(newId,oldId)
+  //     if(newId!=oldId){
+  //       this.getCurrentSongUrl()
+  //     }
+  //   }
+  // },
   computed: {
     iconMode() {
       return this.mode == playMode.sequence
@@ -45,7 +45,7 @@ export const playerMixin = {
     },
     ...mapState(["playlist", "mode"]),
     ...mapGetters([
-      // "currentSongUrl",
+      "currentSongUrl",
       "currentSongName",
       "currentSongImg",
       "currentSonger",
@@ -54,23 +54,23 @@ export const playerMixin = {
     ])
   },
   methods: {
-     //获取歌曲URL
-     getCurrentSongUrl(){
-      let data={
-        format:'mp3',
-        rid:this.currentSongId,
-        response:'url',
-        type:'convert_url3',
-        br:'128kmp3',
-        from:'web',
-        t:new Date().getTime(),
-      }
-      console.log(data)
-      // getCurrentSongUrl().then(res=>{
-      //   console.log(res)
-      //   return 
-      // })
-    },
+    //  //获取歌曲URL
+    //  getCurrentSongUrl(){
+    //   let data={
+    //     format:'mp3',
+    //     rid:this.currentSongId,
+    //     response:'url',
+    //     type:'convert_url3',
+    //     br:'128kmp3',
+    //     from:'web',
+    //     t:new Date().getTime(),
+    //   }
+    //   console.log(data)
+    //   // getCurrentSongUrl().then(res=>{
+    //   //   console.log(res)
+    //   //   return 
+    //   // })
+    // },
 
     //改变播放模式
     changeMode() {

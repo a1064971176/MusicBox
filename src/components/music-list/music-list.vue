@@ -53,6 +53,10 @@ export default {
       rank: {
         type: Boolean,
         default: false
+      },
+      reqId:{
+        type: String,
+        default: '7f15b5e0-a95e-11e9-8b1a-490cc445c4c3'
       }
     },
     data() {
@@ -87,8 +91,18 @@ export default {
             this.$router.back()
         },
         select({list,index}){
+          let data={
+            format:'mp3',
+            rid:this.songs[index].rid,
+            response:'url',
+            type:'convert_url3',
+            br:'128kmp3',
+            from:'web',
+            t:new Date().getTime(),
+            reqId: this.reqId
+          } 
             // this.$store.dispatch('selectPlay',{list:this.songs,index})
-            this.selectPlay({list:this.songs,index})
+            this.selectPlay({list:this.songs,index,data})
         },
         random(){
             this.randomPlay({list:this.songs})

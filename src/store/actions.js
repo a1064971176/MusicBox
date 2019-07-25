@@ -1,4 +1,4 @@
-import { getSong } from "@/service/getData";
+import { getMusic } from "@/service/getData";
 import { playMode } from "@/assets/js/config.js";
 import { shuffle } from "@/assets/js/util.js";
 import { saveSearch,deleteSearch,clearSearch } from "@/assets/js/cache.js";
@@ -9,21 +9,26 @@ function findIndex(list, song) {
     return item.id === song.id;
   });
 }
-export const selectPlay = ({ commit, state }, { list, index }) => {
+export const selectPlay = ({ commit, state }, { list, index, data }) => {
+  console.log(list,index)
+  console.log(data)
+  getMusic(data).then(res => {
+    if (res.data.code == 200) {
+      commit("setMusicUrl", res.data.url);
+      commit("setSequenceList", list);
+      if (state.mode === playMode.random) {
+        let randomList = shuffle(list);
+        commit("setPlayList", randomList);
+        index = findIndex(randomList, list[index]);
+      } else {
+        commit("setPlayList", list);
+      }
 
-  commit("setSequenceList", list);
-  if (state.mode === playMode.random) {
-    let randomList = shuffle(list);
-    commit("setPlayList", randomList);
-    index = findIndex(randomList, list[index]);
-  } else {
-    commit("setPlayList", list);
-  }
-
-  commit("setCurrentIndex", index);
-  commit("setFullScreen", true);
-  commit("setPlayingState", true);
-
+      commit("setCurrentIndex", index);
+      commit("setFullScreen", true);
+      commit("setPlayingState", true);
+    }
+  })
 };
 //全屏
 export const setFullScreen = ({ commit }, flag) => {
