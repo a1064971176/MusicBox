@@ -44,8 +44,5 @@ const mutations = {
     // setFavoriteList(state, list) {
     //     state.favoriteList = list
     // }
-    setMusicUrl(state, Url) {
-        state.musicUrl=Url
-    }
 }
 export default mutations

@@ -3,10 +3,9 @@ import { groupPatternsByBaseDirectory } from "fast-glob/out/managers/tasks";
 const getters = {
     currentSong: (state) => {
             return state.playlist[state.currentIndex]||{}
-        
     },
     currentSongId: (state, getters) => {
-        return getters.currentSong.rid 
+        return getters.currentSong.rid
     },
     currentSongName: (state, getters) => {
         return getters.currentSong.name || null
@@ -25,7 +24,7 @@ const getters = {
         // }else{
         //     return null
         // }
-        return state.musicUrl||""
+        // return state.musicUrl||""
         
     },
     sequenceList:(state)=>{

@@ -3,9 +3,18 @@ import {playMode} from './config'
 import {shuffle} from './util'
 
 export const playlistMixin = {
+  data() {
+    return {
+      flag:true
+    };
+  },
   computed: {
     ...mapState([
-      'playlist'
+      'playlist',
+      "currentIndex"
+    ]),
+    ...mapGetters([
+      // "currentIndex"
     ])
   },
   mounted() {
@@ -17,7 +26,10 @@ export const playlistMixin = {
   watch: {
     playlist(newVal) {
       this.handlePlaylist(newVal)
-    }
+    },
+    // currentIndex(newVal) {
+    //   console.log(newVal)
+    // },
   },
   methods: {
     handlePlaylist() {
@@ -43,9 +55,9 @@ export const playerMixin = {
         ? "icon-loop"
         : "icon-random";
     },
-    ...mapState(["playlist", "mode"]),
+    ...mapState(["playlist", "mode","currentIndex"]),
     ...mapGetters([
-      "currentSongUrl",
+      // "currentSongUrl",
       "currentSongName",
       "currentSongImg",
       "currentSonger",

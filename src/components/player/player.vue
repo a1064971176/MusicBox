@@ -122,10 +122,11 @@ import { playMode } from "@/assets/js/config.js";
 import Lyric from "@/assets/js/lyric.js";
 import Scroll from "@/base/scroll/scroll";
 import { truncate } from "fs";
-import { getLyric } from "@/service/getData";
+import { getLyric, getMusic } from "@/service/getData";
 import Playlist from "@/components/playlist/playlist";
 
 import { playerMixin } from "@/assets/js/mixin.js";
+import { constants } from 'crypto';
 
 const transform = prefixStyle("transform");
 const transitionDuration = prefixStyle("transitionDuration");
@@ -141,8 +142,8 @@ export default {
       currentLineNume: 0,
       currentShow: "cd",
       playingLyric: "",
-      reqId:"32779950-aea0-11e9-bded-712fbe598268"
-      // currentSongUrl:""
+      reqId:"32779950-aea0-11e9-bded-712fbe598268",
+      currentSongUrl:""
     };
   },
   created() {
@@ -382,7 +383,23 @@ export default {
         this.currentLyric.seek(currentTime * 1000);
       }
     },
-    
+    getUrl(){
+      let data={
+            format:'mp3',
+            rid:this.currentSongId,
+            response:'url',
+            type:'convert_url3',
+            br:'128kmp3',
+            from:'web',
+            t:new Date().getTime(),
+            reqId: this.reqId
+          }
+        getMusic(data).then(res=>{
+            if(res.data.code=200){
+              this.currentSongUrl=res.data.url
+            }
+          })
+    },
     getLyric(id) {
       let data={
         musicId:id,
@@ -446,7 +463,7 @@ export default {
       "fullScreen",
       // "playlist",
       "playing",
-      "currentIndex",
+      // "currentIndex",
       // "mode",
       // "sequenceList"
     ]),
@@ -459,6 +476,9 @@ export default {
     ])
   },
   watch: {
+    currentSongId(){
+       this.getUrl()
+    },
     //监听音乐url变化  执行播放
     currentSongUrl(newUrl) {
       if(!newUrl) return

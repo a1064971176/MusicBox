@@ -90,19 +90,10 @@ export default {
         back(){
             this.$router.back()
         },
-        select({list,index}){
-          let data={
-            format:'mp3',
-            rid:this.songs[index].rid,
-            response:'url',
-            type:'convert_url3',
-            br:'128kmp3',
-            from:'web',
-            t:new Date().getTime(),
-            reqId: this.reqId
-          } 
+        select({list,index}){ 
+          
             // this.$store.dispatch('selectPlay',{list:this.songs,index})
-            this.selectPlay({list:this.songs,index,data})
+            this.selectPlay({list:this.songs,index})
         },
         random(){
             this.randomPlay({list:this.songs})

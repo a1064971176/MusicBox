@@ -6,29 +6,22 @@ import { saveSearch,deleteSearch,clearSearch } from "@/assets/js/cache.js";
 
 function findIndex(list, song) {
   return list.findIndex(item => {
-    return item.id === song.id;
+    return item.rid === song.rid;
   });
 }
-export const selectPlay = ({ commit, state }, { list, index, data }) => {
-  console.log(list,index)
-  console.log(data)
-  getMusic(data).then(res => {
-    if (res.data.code == 200) {
-      commit("setMusicUrl", res.data.url);
-      commit("setSequenceList", list);
-      if (state.mode === playMode.random) {
-        let randomList = shuffle(list);
-        commit("setPlayList", randomList);
-        index = findIndex(randomList, list[index]);
-      } else {
-        commit("setPlayList", list);
-      }
+export const selectPlay = ({ commit, state }, { list, index }) => {
+  commit("setSequenceList", list);
+  if (state.mode === playMode.random) {
+    let randomList = shuffle(list);
+    commit("setPlayList", randomList);
+    index = findIndex(randomList, list[index]);
+  } else {
+    commit("setPlayList", list);
+  }
 
-      commit("setCurrentIndex", index);
-      commit("setFullScreen", true);
-      commit("setPlayingState", true);
-    }
-  })
+  commit("setCurrentIndex", index);
+  commit("setFullScreen", true);
+  commit("setPlayingState", true);
 };
 //全屏
 export const setFullScreen = ({ commit }, flag) => {
@@ -78,7 +71,6 @@ export const insertSong = ({ commit, state }, song) => {
       sequenceList.splice(fsIndex + 1, 1);
     }
   }
-
   commit("setPlayList", playlist);
   commit("setSequenceList", sequenceList);
   commit("setCurrentIndex", currentIndex);
@@ -86,7 +78,7 @@ export const insertSong = ({ commit, state }, song) => {
   commit("setPlayingState", true);
 };
 //保存搜索历史
-export const saveSearchHistory = ({commit},query) => {
+export const saveSearchHistory = ({ commit }, query) => {
   commit("setSearchHistory",saveSearch(query))
 };
 //删除搜索历史

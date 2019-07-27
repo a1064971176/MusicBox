@@ -105,9 +105,14 @@ export default {
     //     });
     // },
     selectItem(item){
-      getSong(item.id).then((res)=>{
+      let data={
+        mid:item.rid,
+        reqId:this.reqId
+      }
+      
+      getSong(data).then((res)=>{
         if(res.data.code===200){
-        this.insertSong(res.data.songs[0])
+        this.insertSong(res.data.data)
         this.$emit("select")
         }
       })
