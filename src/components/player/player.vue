@@ -416,12 +416,6 @@ export default {
             this.currentLyric.play();
           }
           // console.log(this.currentLyric);
-        })
-        .catch(() => {
-          // if (nullthis) {
-          //   this.currentLyric = nullthis.playingLyric = "";
-          //   this.currentLineNume = 0;
-          // }
         });
     },
     handleLyric({ lineNum, txt }) {

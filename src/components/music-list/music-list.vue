@@ -14,9 +14,9 @@
       <div class="filter" ref="filter"></div>
     </div>
     <div class="bg-layer" ref="layer"></div>
-    <scroll @scroll="scroll" :probe-type="probeType" :listen-scroll="listenScroll" :data="songs" class="list" ref="list">
+    <scroll @scroll="scroll" :probe-type="probeType" :listen-scroll="listenScroll" :data="songs"  :pullup="pullup" @scrollToEnd="scrollToEnd()" class="list" ref="list">
         <div class="song-list-wrapper">
-            <song-list :songs="songs" @select="select" :rank="rank"></song-list>
+            <song-list :songs="songs" @select="select" :showMore="showMore" :rank="rank"></song-list>
         </div>
         <div class="loading-container" v-show="!songs.length">
           <loading></loading>
@@ -57,11 +57,16 @@ export default {
       reqId:{
         type: String,
         default: '7f15b5e0-a95e-11e9-8b1a-490cc445c4c3'
+      },
+      showMore:{
+        type:Boolean,
+        default:false
       }
     },
     data() {
         return {
-            scrollY:0
+            scrollY:0,
+            pullup: true,
         }
     },
     computed:{
@@ -79,6 +84,9 @@ export default {
         this.$refs.list.$el.style.top=`${this.imageHeight}px`
     },
     methods:{
+      scrollToEnd(){
+        this.$emit("scroll")
+      },
       handlePlaylist(playlist){
         const bottom=playlist.length?'60px':''
         this.$refs.list.$el.style.bottom=bottom
@@ -124,8 +132,9 @@ export default {
                 this.$refs.bgImage.style.height=`${RESERVED_HEIGHT }px`
                 this.$refs.playBtn.style.display='none'
             }else{
-                 this.$refs.bgImage.style.paddingTop='70%'
+                this.$refs.bgImage.style.paddingTop='70%'
                 this.$refs.bgImage.style.height=0
+                this.$refs.playBtn.style.display='block'
             }
             this.$refs.bgImage.style.zIndex=zIndex
             this.$refs.bgImage.style[transform]=`scale(${scale})`

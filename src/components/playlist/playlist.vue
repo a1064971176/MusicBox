@@ -16,7 +16,7 @@
             <li
               class="item"
               v-for="(item, index) in sequenceList"
-              :key="item.id"
+              :key="item.rid"
               @click="selectItem(item,index)"
               ref="lisrItem"
             >
@@ -104,15 +104,12 @@ export default {
     },
     //删除
     deleteOne(item) {
-      console.log(item)
       this.deleteSong(item);
       if(!this.playlist.length) this.hide()
     },
     //显示确定框
     showConfirm(){
-      console.log(1)
       this.$refs.confirm.show()
-      console.log(2)
     },
     confirmClear(){
       this.deleteSongList()

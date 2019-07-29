@@ -10,11 +10,15 @@
           <p class="desc">{{song.artist}}</p>
         </div>
       </li>
+      <li>
+          <loading v-show="songs.length&&showMore"></loading>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
+import Loading from "@/base/loading/loading";
 export default {
   props: {
     songs: {
@@ -24,7 +28,11 @@ export default {
     rank: {
       type: Boolean,
       default: false
-    }
+    },
+     showMore:{
+        type:Boolean,
+        default:false
+      }
   },
   methods: {
     selectItem(list, index) {
@@ -51,6 +59,9 @@ export default {
         return index + 1;
       }
     }
+  },
+  components:{
+    Loading
   }
 };
 </script>

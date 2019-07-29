@@ -100,7 +100,7 @@ export const deleteSong=({commit,state},song)=>{
 
   let sIndex=findIndex(sequenceList,song)
   sequenceList.splice(sIndex,1)
-  if(pIndex==-1) return //阻止 删除列表最后一个  会调用两次 ???(为什么删最后一个调用两次)
+  // if(pIndex==-1) return //阻止 删除列表最后一个  会调用两次 ???(为什么删最后一个调用两次)
   if(currentIndex>pIndex||currentIndex===playlist.length){currentIndex--}
   commit("setPlayList", playlist);
   commit("setSequenceList", sequenceList);
