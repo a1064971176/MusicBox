@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapMutations } from "vuex";
+import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 import animations from "create-keyframe-animation";
 import { prefixStyle } from "@/assets/js/dom.js";
 import progressBar from "@/base/progress-bar/progress-bar";
@@ -294,6 +294,7 @@ export default {
     //audio是canplay状态
     ready() {
       this.songReady = true;
+      this.savePlayHistory(this.currentSong)
     },
     //audio是error状态
     error() {
@@ -435,7 +436,8 @@ export default {
       // "setCurrentIndex",
       // "setPlayMode",
       // "setPlayList"
-    ])
+    ]),
+    ...mapActions(["savePlayHistory"])
   },
   computed: {
     cdCls() {
@@ -486,7 +488,9 @@ export default {
     },
     //监听playing变化  改变播放器状态
     playing(newPlaying) {
+      console.log(newPlaying)
       const audio = this.$refs.audio;
+      console.log(audio)
       this.$nextTick(() => {
         newPlaying ? audio.play() : audio.pause();
       });

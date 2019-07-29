@@ -57,7 +57,7 @@ export const playerMixin = {
     },
     ...mapState(["playlist", "mode","currentIndex"]),
     ...mapGetters([
-      // "currentSongUrl",
+      "currentSong",
       "currentSongName",
       "currentSongImg",
       "currentSonger",

@@ -38,9 +38,9 @@ const mutations = {
     setSearchHistory(state, history) {
         state.searchHistory = history
     },
-    // setPlayHistory(state, history) {
-    //     state.playHistory = history
-    // },
+    setPlayHistory(state, history) {
+        state.playHistory = history
+    },
     // setFavoriteList(state, list) {
     //     state.favoriteList = list
     // }

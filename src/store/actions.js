@@ -1,7 +1,7 @@
 import { getMusic } from "@/service/getData";
 import { playMode } from "@/assets/js/config.js";
 import { shuffle } from "@/assets/js/util.js";
-import { saveSearch,deleteSearch,clearSearch } from "@/assets/js/cache.js";
+import { saveSearch,deleteSearch,clearSearch,savePlay } from "@/assets/js/cache.js";
 
 
 function findIndex(list, song) {
@@ -115,4 +115,8 @@ export const deleteSongList=({commit})=>{
   commit("setSequenceList", []);
   commit("setCurrentIndex", -1);
   commit("setPlayingState", false)
+}
+
+export const savePlayHistory=({commit},song)=>{
+  commit("setPlayHistory", savePlay(song));
 }
