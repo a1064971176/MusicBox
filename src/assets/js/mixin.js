@@ -95,9 +95,9 @@ export const playerMixin = {
         list = this.sequenceList;
       }
       this.setPlayList(list);
-      this.rseetCurrentIndex(list);
+      this.resetCurrentIndex(list);
     },
-    rseetCurrentIndex(list) {
+    resetCurrentIndex(list) {
       // console.log(list)
       let index = list.findIndex((item, inde) => {
         return item.id === this.currentSongId;

@@ -19,6 +19,7 @@
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.6.6",
+    "vue-awesome-mui": "^1.7.3",
     "vue-lazyload": "1.0.3",
     "vue-router": "^3.0.2",
     "vuex": "^3.1.0"
