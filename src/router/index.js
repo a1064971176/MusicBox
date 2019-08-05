@@ -44,5 +44,12 @@ export default new Router({
                 path: ':id',
                 component: ()=>import('@/components/singer-detail/singer-detail'),
             }]
+    },{
+        path: '/user',
+            component: ()=>import('@/components/user-center/user-center'),
+            children: [{
+                path: ':id',
+                component: ()=>import('@/components/singer-detail/singer-detail'),
+            }]
     }]
 })

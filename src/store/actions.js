@@ -1,7 +1,7 @@
 import { getMusic } from "@/service/getData";
 import { playMode } from "@/assets/js/config.js";
 import { shuffle } from "@/assets/js/util.js";
-import { saveSearch,deleteSearch,clearSearch,savePlay } from "@/assets/js/cache.js";
+import { saveSearch,deleteSearch,clearSearch,savePlay,saveFavorite,deleteFavorite } from "@/assets/js/cache.js";
 
 
 function findIndex(list, song) {
@@ -119,4 +119,10 @@ export const deleteSongList=({commit})=>{
 
 export const savePlayHistory=({commit},song)=>{
   commit("setPlayHistory", savePlay(song));
+}
+export const saveFavoriteList=({commit},song)=>{
+  commit("setFavoriteList", saveFavorite(song));
+}
+export const deleteFavoriteList=({commit},song)=>{
+  commit("setFavoriteList", deleteFavorite(song));
 }

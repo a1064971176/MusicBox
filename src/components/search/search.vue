@@ -4,7 +4,7 @@
       <search-box ref="SearchBox" @query="oneQueryChange"></search-box>
     </div>
     <div class="shortcut-wrapper" ref="shortcutWapper" v-show="!query">
-      <scroll class="shortcut" ref="shortcut" :data="shortcut">
+      <scroll :refreshDelay="refreshDelay" class="shortcut" ref="shortcut" :data="shortcut">
         <div>
           <div class="hot-key">
             <h1 class="title">热门收搜</h1>

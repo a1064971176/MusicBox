@@ -74,7 +74,7 @@
               <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon icon-not-favorite"></i>
+              <i class="icon" :class="getFavoriteIcon(currentSong)" @click="toggleFavorite(currentSong)"></i>
             </div>
           </div>
         </div>
@@ -331,6 +331,7 @@ export default {
       if (this.playlist.length === 1) {
         //如果列表长度为1 单曲循环
         this.loop();
+        return
       } else {
         let index = this.currentIndex + 1;
         if (index === this.playlist.length) index = 0; //超过列表长度后重置
@@ -346,6 +347,7 @@ export default {
       if (this.playlist.length === 1) {
         //如果列表长度为1 单曲循环
         this.loop();
+        return
       } else {
         let index = this.currentIndex - 1;
         if (index === -1) index = this.playlist.length - 1; //小于0后设置为最后一首
@@ -406,8 +408,7 @@ export default {
         musicId:id,
         reqid:this.reqId
       }
-      getLyric(data)
-        .then(res => {
+      getLyric(data).then(res => {
           let newlyc=res.data.data.lrclist.map(val=>{
             val.time=val.time*1000
             return val
@@ -488,9 +489,9 @@ export default {
     },
     //监听playing变化  改变播放器状态
     playing(newPlaying) {
-      console.log(newPlaying)
+      // console.log(newPlaying)
       const audio = this.$refs.audio;
-      console.log(audio)
+      // console.log(audio)
       this.$nextTick(() => {
         newPlaying ? audio.play() : audio.pause();
       });

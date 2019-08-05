@@ -77,7 +77,7 @@ export function loadPlay() {
 export function saveFavorite(song) {
   let songs = storage.get(FAVORITE_KEY, [])
   insertArray(songs, song, (item) => {
-    return song.id === item.id
+    return song.rid === item.rid
   }, FAVORITE_MAX_LEN)
   storage.set(FAVORITE_KEY, songs)
   return songs
@@ -86,7 +86,7 @@ export function saveFavorite(song) {
 export function deleteFavorite(song) {
   let songs = storage.get(FAVORITE_KEY, [])
   deleteFromArray(songs, (item) => {
-    return item.id === song.id
+    return item.rid === song.rid
   })
   storage.set(FAVORITE_KEY, songs)
   return songs

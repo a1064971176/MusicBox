@@ -55,7 +55,7 @@ export const playerMixin = {
         ? "icon-loop"
         : "icon-random";
     },
-    ...mapState(["playlist", "mode","currentIndex"]),
+    ...mapState(["playlist", "mode","currentIndex","favoriteList"]),
     ...mapGetters([
       "currentSong",
       "currentSongName",
@@ -119,7 +119,7 @@ export const playerMixin = {
     },
     isFavorite(song) {
       const index = this.favoriteList.findIndex((item) => {
-        return item.id === song.id
+        return item.rid === song.rid
       })
       return index > -1
     },
@@ -140,6 +140,7 @@ export const playerMixin = {
 export const searchMixin = {
   data() {
     return {
+      refreshDelay:100,
       // showFlag: false,
       query:''
     };
