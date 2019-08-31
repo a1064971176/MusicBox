@@ -270,12 +270,12 @@
 
 * 参数
 
-    format=mp3
-    rid=72301272
-    response=url
-    type=convert_url3
-    br=128kmp3
-    from=web
+    format=mp3  
+    rid=72301272  
+    response=url  
+    type=convert_url3  
+    br=128kmp3 
+    from=web  
     t=1563981121318
 
 * 调用例子

@@ -392,7 +392,7 @@ export default {
             rid:this.currentSongId,
             response:'url',
             type:'convert_url3',
-            br:'128kmp3',
+            br:'128kmp3',//320kmp3
             from:'web',
             t:new Date().getTime(),
             reqId: this.reqId
@@ -409,10 +409,15 @@ export default {
         reqid:this.reqId
       }
       getLyric(data).then(res => {
-          let newlyc=res.data.data.lrclist.map(val=>{
+         let newlyc;
+        if(res.data.data.lrclist){
+          newlyc=res.data.data.lrclist.map(val=>{
             val.time=val.time*1000
             return val
           })
+        }else{
+          newlyc=[{lineLyric:"暂无歌词",time:0}]
+        }
           this.currentLyric = new Lyric(newlyc, this.handleLyric);
           if (this.playing) {
             this.currentLyric.play();
@@ -474,6 +479,7 @@ export default {
   },
   watch: {
     currentSongId(){
+      document.title=`${this.currentSongName} - ${this.currentSonger}`
        this.getUrl()
     },
     //监听音乐url变化  执行播放
