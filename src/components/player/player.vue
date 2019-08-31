@@ -479,7 +479,7 @@ export default {
   },
   watch: {
     currentSongId(){
-      document.title=`${this.currentSongName} - ${this.currentSonger}`
+      document.title=`${this.currentSonger} - ${this.currentSongName}`
        this.getUrl()
     },
     //监听音乐url变化  执行播放

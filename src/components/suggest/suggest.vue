@@ -67,6 +67,9 @@ export default {
             this.result = res.data.data.list||[];
             if(res.data.data.total==0)return this.hasMore = false;
             if (res.data.data.total < this.limit) this.hasMore = false;
+          }else if(res.data.code === -1){
+            this.result = [];
+            this.hasMore = false;
           }
         });
       }
