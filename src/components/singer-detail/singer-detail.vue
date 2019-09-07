@@ -1,6 +1,6 @@
 <template>
     <transition name="slide">
-        <music-list :title="title" :bg-image="bgImage" :songs="songs" :reqId="reqId"></music-list>
+        <music-list :title="title" :bg-image="bgImage" :songs="songs" :reqId="reqId" :showMore="showMore" @scroll="scroll"></music-list>
     </transition>
 </template>
 
@@ -12,6 +12,10 @@ export default {
     data() {
         return {
             songs:[],
+            limit: 30,
+            page: 1,
+            pullup: true,
+            showMore: true,
             reqId:'7f15b5e0-a95e-11e9-8b1a-490cc445c4c3'
         }
     },
@@ -38,16 +42,26 @@ export default {
             }
             let data={
                 artistid:singer.id,
-                pn:1,
-                rn:30,
+                pn:this.page,
+                rn:this.limit,
                 reqId:this.reqId
             }
              _setSinger(data).then(res=>{
-            this.songs=res.data.data.list
-            this.reqId=res.data.reqId
-                //  console.log(this.songs)
-
-        })
+                if (res.data.code === 200) {
+                    this.songs.push(...res.data.data.list);
+                    if (res.data.data.total > this.limit*this.page) {
+                        this.page++;
+                    } else {
+                        this.showMore = false;
+                    }
+                }
+            })
+        },
+        //加载更多
+        scroll(){
+            if(this.showMore){
+                this.setSinger(this.$store.state.singer)
+            }
         }
        
     },
