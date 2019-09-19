@@ -13,7 +13,8 @@
             <img height="60" v-lazy="item.pic70">
           </div>
           <div class="text">
-            <h2 class="name">{{item.name}}</h2>
+            <h2 class="name">{{item.name}}<span> ({{item.aartist}})</span></h2>
+            <p class="desc">单曲 {{item.musicNum}} 专辑 {{item.albumNum}} MV {{item.mvNum}}</p>
           </div>
         </li>
         <li>
@@ -141,9 +142,13 @@ export default {
         .name {
           margin-bottom: 10px;
           color: $color-text;
+          span{
+              color: $color-text-d;
+          }
         }
         .desc {
           color: $color-text-d;
+          font-size: $font-size-small
         }
       }
     }
