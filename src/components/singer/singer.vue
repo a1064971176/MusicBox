@@ -13,7 +13,7 @@
             <img height="60" v-lazy="item.pic70">
           </div>
           <div class="text">
-            <h2 class="name">{{item.name}}<span> ({{item.aartist}})</span></h2>
+            <h2 class="name">{{item.name}}<span v-if="item.aartist"> ({{item.aartist}})</span></h2>
             <p class="desc">单曲 {{item.musicNum}} 专辑 {{item.albumNum}} MV {{item.mvNum}}</p>
           </div>
         </li>
