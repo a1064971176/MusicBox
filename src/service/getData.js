@@ -25,4 +25,6 @@ export const getHotSearch=(data)=>axios.get('/api/www/search/searchKey', {params
 export const search=(data)=>axios.get('/api/www/search/searchMusicBykeyWord',{params:{...data}})
 //获取歌曲详情
 export const getSong = (data) => axios.get('/api/www/music/musicInfo',{params:{...data}})
+//获取主播电台
+export const getRadioList = (data) => axios.get('/api/www/radio/index/radioList',{params:{...data}})
 

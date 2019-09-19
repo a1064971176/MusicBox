@@ -15,6 +15,14 @@
   overflow: hidden;
   white-space: nowrap
 }
+//文本隐藏
+@mixin text-over($line:2) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $line;
+    -webkit-box-orient: vertical;
+}
 
 
 // 扩展点击区域

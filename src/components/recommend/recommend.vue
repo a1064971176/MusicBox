@@ -6,21 +6,46 @@
           <slider>
             <div v-for="(item, index) in banners" :key="index">
               <a :href="item.url">
-                <img class="needsclick" :src="item.pic" @load="loadImage">
+                <img class="needsclick" :src="item.pic" @load="loadImage" />
               </a>
             </div>
           </slider>
         </div>
-        <div class="recommend-list">
-          <h1 class="list-title">热门歌单推荐</h1>
-          <ul>
-            <li v-for="(item, index) in discList" :key="index" class="item" @click="selectItem(item)">
+        <switches :switches="switches" :currentIndex="Index" @switch="switchItem"></switches>
+        <div class="recommend-list" v-if="Index == 0">
+          <!-- <h1 class="list-title">热门歌单推荐</h1> -->
+          <ul class="items">
+            <li
+              v-for="(item, index) in discList"
+              :key="index"
+              class="item"
+              @click="selectItem(item)"
+            >
               <div class="icon">
-                <img v-lazy="item.img" alt width="60" height="66">
+                <img v-lazy="item.img" alt width="100%" />
               </div>
               <div class="text">
                 <h2 class="name">{{item.name}}</h2>
                 <p class="desc">{{item.info}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="recommend-list" v-if="Index == 1">
+          <!-- <h1 class="list-title">主播电台</h1> -->
+          <ul class="items">
+            <li
+              v-for="(item, index) in radiolist"
+              :key="index"
+              class="item"
+              @click="selectRadioItem(item)"
+            >
+              <div class="icon">
+                <img v-lazy="item.pic" alt width="100%" />
+              </div>
+              <div class="text">
+                <h2 class="name">{{item.artist}}</h2>
+                <p class="desc">{{item.album}}</p>
               </div>
             </li>
           </ul>
@@ -37,22 +62,32 @@
 <script>
 import Loading from "@/base/loading/loading";
 import Scroll from "@/base/scroll/scroll";
-import { getRecommend, getDiscList } from "@/service/getData.js";
+import {
+  getRecommend,
+  getDiscList,
+  getRadioList,
+  getSong
+} from "@/service/getData.js";
 import Slider from "@/base/slider/slider";
 import { playlistMixin } from "@/assets/js/mixin.js";
-import {mapMutations} from "vuex"
+import { mapMutations, mapActions } from "vuex";
+import Switches from "@/base/switches/switches.vue";
 export default {
   mixins: [playlistMixin],
   data() {
     return {
+      Index: 0,
+      switches: [{ name: "热门歌单推荐" }, { name: "主播电台" }],
       banners: [],
       discList: [],
-      reqId:"b94ae990-a3c5-11e9-94a9-6f41d3eb5db3"
+      radiolist: [],
+      reqId: "d67e44e0-daa1-11e9-9f14-cf8c3cf14acf"
     };
   },
   created() {
     this._getRecommend();
     this._getDiscList();
+    this._getRadioList();
   },
   methods: {
     handlePlaylist(playlist) {
@@ -61,10 +96,26 @@ export default {
       this.$refs.recommend.style.bottom = bottom;
       this.$refs.scroll.refresh();
     },
-    selectItem(item){
+    selectItem(item) {
       // console.log(item)
-      this.setDisc(item)
-      this.$router.push(`/recommend/${item.id}`)
+      this.setDisc(item);
+      this.$router.push(`/recommend/${item.id}`);
+    },
+    selectRadioItem(item) {
+      let data = {
+        mid: item.rid,
+        reqId: this.reqId
+      };
+
+      getSong(data).then(res => {
+        if (res.data.code === 200) {
+          this.insertSong(res.data.data);
+        }
+      });
+    },
+    switchItem(index) {
+      this.Index = index;
+      this.$refs.scroll.refresh();
     },
     //处理字符串
     // descriptionSlice(cont) {
@@ -74,30 +125,43 @@ export default {
     //     return cont;
     //   }
     // },
-    
+
     //获取banner
     _getRecommend() {
-      let data={
-        reqId:this.reqId
-      }
+      let data = {
+        reqId: this.reqId
+      };
       getRecommend(data).then(res => {
         if (res.data.code === 200) {
           this.banners = res.data.data;
-          this.reqId=res.data.reqId
+          this.reqId = res.data.reqId;
         }
       });
     },
 
     //获取每日推荐
     _getDiscList() {
-      let data={
-        loginUid:0,
-        reqId:this.reqId
-      }
+      let data = {
+        loginUid: 0,
+        reqId: this.reqId
+      };
       getDiscList(data).then(res => {
         if (res.data.code === 200) {
           this.discList = res.data.data.list;
-          this.reqId=res.data.reqId
+          this.reqId = res.data.reqId;
+        }
+      });
+    },
+    //获取主播电台
+    _getRadioList() {
+      let data = {
+        // loginUid:0,
+        reqId: this.reqId
+      };
+      getRadioList(data).then(res => {
+        if (res.data.code === 200) {
+          this.radiolist = res.data.data.albumList;
+          this.reqId = res.data.reqId;
         }
       });
     },
@@ -109,12 +173,14 @@ export default {
         this.checkloaded = true;
       }
     },
+    ...mapActions(["insertSong"]),
     ...mapMutations(["setDisc"])
   },
   components: {
     Slider,
     Scroll,
-    Loading
+    Loading,
+    Switches
   }
 };
 </script>
@@ -144,30 +210,45 @@ export default {
         font-size: $font-size-medium;
         color: $color-theme;
       }
+      .items {
+        display: flex;
+        flex-flow: wrap;
+        justify-content: space-around;
+      }
       .item {
+        width: 30vw;
+        // height: 40vw;
         display: flex;
         box-sizing: border-box;
         align-items: center;
-        padding: 0 20px 20px 20px;
+        // padding: 0 20px 20px 20px;
+        flex-direction: column;
         .icon {
-          flex: 0 0 60px;
-          width: 60px;
-          padding-right: 20px;
+          //   flex: 0 0 60px;
+          width: 30vw;
+          height: 30vw;
+          border-radius: 10px;
+          overflow: hidden;
+          //   padding-right: 20px;
         }
         .text {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          flex: 1;
+          //   display: flex;
+          //   flex-direction: column;
+          //   justify-content: center;
+          //   flex: 1;
+          width: 100%;
+          height: 55px;
           line-height: 20px;
           overflow: hidden;
           font-size: $font-size-medium;
           .name {
-            @include no-wrap();
-            margin-bottom: 10px;
+            @include text-over();
+            margin-top: 5px;
             color: $color-text;
+            text-align: center;
           }
           .desc {
+            display: none;
             @include no-wrap();
             color: $color-text-d;
           }

@@ -33,7 +33,7 @@ export default {
   display: flex;
   align-items: center;
   width: 240px;
-  margin: 0 auto;
+  margin: 20px auto;
   border: 1px solid $color-highlight-background;
   border-radius: 5px;
   .switch-item {

@@ -74,7 +74,11 @@
               <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon" :class="getFavoriteIcon(currentSong)" @click="toggleFavorite(currentSong)"></i>
+              <i
+                class="icon"
+                :class="getFavoriteIcon(currentSong)"
+                @click="toggleFavorite(currentSong)"
+              ></i>
             </div>
           </div>
         </div>
@@ -126,7 +130,7 @@ import { getLyric, getMusic } from "@/service/getData";
 import Playlist from "@/components/playlist/playlist";
 
 import { playerMixin } from "@/assets/js/mixin.js";
-import { constants } from 'crypto';
+import { constants } from "crypto";
 
 const transform = prefixStyle("transform");
 const transitionDuration = prefixStyle("transitionDuration");
@@ -142,8 +146,8 @@ export default {
       currentLineNume: 0,
       currentShow: "cd",
       playingLyric: "",
-      reqId:"32779950-aea0-11e9-bded-712fbe598268",
-      currentSongUrl:""
+      reqId: "32779950-aea0-11e9-bded-712fbe598268",
+      currentSongUrl: ""
     };
   },
   created() {
@@ -294,7 +298,7 @@ export default {
     //audio是canplay状态
     ready() {
       this.songReady = true;
-      this.savePlayHistory(this.currentSong)
+      this.savePlayHistory(this.currentSong);
     },
     //audio是error状态
     error() {
@@ -331,12 +335,12 @@ export default {
       if (this.playlist.length === 1) {
         //如果列表长度为1 单曲循环
         this.loop();
-        return
+        return;
       } else {
         let index = this.currentIndex + 1;
         if (index === this.playlist.length) index = 0; //超过列表长度后重置
         this.setCurrentIndex(index);
-        
+
         if (!this.playing) this.togglePlaying(); //如果为暂停状态,改为播放状态
         this.songReady = false; //将状态改为不可点击
       }
@@ -347,7 +351,7 @@ export default {
       if (this.playlist.length === 1) {
         //如果列表长度为1 单曲循环
         this.loop();
-        return
+        return;
       } else {
         let index = this.currentIndex - 1;
         if (index === -1) index = this.playlist.length - 1; //小于0后设置为最后一首
@@ -386,44 +390,49 @@ export default {
         this.currentLyric.seek(currentTime * 1000);
       }
     },
-    getUrl(){
-      let data={
-            format:'mp3',
-            rid:this.currentSongId,
-            response:'url',
-            type:'convert_url3',
-            br:'128kmp3',//320kmp3
-            from:'web',
-            t:new Date().getTime(),
-            reqId: this.reqId
-          }
-        getMusic(data).then(res=>{
-            if(res.data.code=200){
-              this.currentSongUrl=res.data.url
-            }
-          })
+    getUrl() {
+      let data = {
+        format: "mp3",
+        rid: this.currentSongId,
+        response: "url",
+        type: "convert_url3",
+        br: "128kmp3", //320kmp3
+        from: "web",
+        t: new Date().getTime(),
+        reqId: this.reqId
+      };
+      getMusic(data).then(res => {
+        if ((res.data.code = 200)) {
+          this.currentSongUrl = res.data.url;
+        }
+      });
     },
     getLyric(id) {
-      let data={
-        musicId:id,
-        reqid:this.reqId
-      }
+      let data = {
+        musicId: id,
+        reqid: this.reqId
+      };
       getLyric(data).then(res => {
-         let newlyc;
-        if(res.data.data.lrclist){
-          newlyc=res.data.data.lrclist.map(val=>{
-            val.time=val.time*1000
-            return val
-          })
-        }else{
-          newlyc=[{lineLyric:"暂无歌词",time:0}]
-        }
-          this.currentLyric = new Lyric(newlyc, this.handleLyric);
-          if (this.playing) {
-            this.currentLyric.play();
+        let newlyc;
+        if (res.data.status == 200) {
+          if (res.data.data.lrclist != null) {
+            newlyc = res.data.data.lrclist.map(val => {
+              val.time = val.time * 1000;
+              return val;
+            });
+          } else {
+            newlyc = [{ lineLyric: "暂无歌词", time: 0 }];
           }
-          // console.log(this.currentLyric);
-        });
+        } else {
+          newlyc = [{ lineLyric: "暂无歌词", time: 0 }];
+        }
+
+        this.currentLyric = new Lyric(newlyc, this.handleLyric);
+        if (this.playing) {
+          this.currentLyric.play();
+        }
+        // console.log(this.currentLyric);
+      });
     },
     handleLyric({ lineNum, txt }) {
       this.currentLineNume = lineNum;
@@ -438,7 +447,7 @@ export default {
     },
     ...mapMutations([
       // "setPlayingState",
-      "setFullScreen",
+      "setFullScreen"
       // "setCurrentIndex",
       // "setPlayMode",
       // "setPlayList"
@@ -464,7 +473,7 @@ export default {
     ...mapState([
       "fullScreen",
       // "playlist",
-      "playing",
+      "playing"
       // "currentIndex",
       // "mode",
       // "sequenceList"
@@ -478,13 +487,13 @@ export default {
     ])
   },
   watch: {
-    currentSongId(){
-      document.title=`${this.currentSonger} - ${this.currentSongName}`
-       this.getUrl()
+    currentSongId() {
+      document.title = `${this.currentSonger} - ${this.currentSongName}`;
+      this.getUrl();
     },
     //监听音乐url变化  执行播放
     currentSongUrl(newUrl) {
-      if(!newUrl) return
+      if (!newUrl) return;
       if (this.currentLyric) {
         this.currentLyric.stop();
       }

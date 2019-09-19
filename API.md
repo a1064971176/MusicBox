@@ -312,8 +312,21 @@
 
    /newh5/singles/songinfoandlrc?musicId=69284035&reqId=d10600b0-aea1-11e9-98b2-0706e76ce349
 
+## 主播电台
 
-推荐歌手(华语):http://www.kuwo.cn/api/www/radio/index/radioList?reqId=6573f0e0-a3c6-11e9-94a9-6f41d3eb5db3
+* 接口地址
 
-排行榜:http://www.kuwo.cn/api/www/bang/index/bangList?reqId=6573c9d4-a3c6-11e9-94a9-6f41d3eb5db3
+    /api/www/radio/index/radioList
+
+* 参数
+
+    musicId=69284035
+    
+
+* 调用例子
+
+   /api/www/radio/index/radioList?reqId=d67e44e0-daa1-11e9-9f14-cf8c3cf14acf
+
+推荐歌手(华语):http://www.kuwo.cn/api/www/radio/index/radioList?reqId=6573f0e0-a3c6-11e9-94a9-6f41d3eb5db3  
+排行榜:http://www.kuwo.cn/api/www/bang/index/bangList?reqId=6573c9d4-a3c6-11e9-94a9-6f41d3eb5db3  
 主播电台:http://www.kuwo.cn/api/www/radio/index/radioList?reqId=6573f0e0-a3c6-11e9-94a9-6f41d3eb5db3
