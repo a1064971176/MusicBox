@@ -1,6 +1,12 @@
 <template>
   <transition name="slide">
-    <music-list :title="title" :bgImage="bgImage" :songs="songs"></music-list>
+    <music-list
+      :title="title"
+      :bgImage="bgImage"
+      :songs="songs"
+      :showMore="showMore"
+      @scroll="scroll"
+    ></music-list>
   </transition>
 </template>
 
@@ -13,7 +19,11 @@ export default {
   data() {
     return {
       songs: [],
-      reqId:'b0aeb760-a90d-11e9-ab0a-f511ed1676be',
+      limit: 30,
+      page: 1,
+      pullup: true,
+      showMore: true,
+      reqId: "b0aeb760-a90d-11e9-ab0a-f511ed1676be"
     };
   },
   computed: {
@@ -35,19 +45,31 @@ export default {
         this.$router.push("/recommend");
         return;
       }
-      let data={
-        pid:disc.id,
-        pn:1,
-        rn:30,
-        reqId:this.reqId
-      }
+      let data = {
+        pid: disc.id,
+        pn: this.page,
+        rn: this.limit,
+        reqId: this.reqId
+      };
       getSongList(data).then(res => {
-            if(res.data.code===200){
-              this.songs=res.data.data.musicList
-              this.reqId=res.data.reqId
-              }
+        if (res.data.code === 200) {
+            // this.songs = res.data.data.musicList;
+            // this.reqId = res.data.reqId;
+           this.songs.push(...res.data.data.musicList);
+            if (res.data.data.total > this.limit*this.page) {
+                this.page++;
+            } else {
+                this.showMore = false;
+            }
+        }
         // console.log(this.songs);
       });
+    },
+    //加载更多
+    scroll(){
+        if(this.showMore){
+            this._getSongList(this.disc);
+        }
     }
   },
   components: {
@@ -57,10 +79,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variable.scss';
- .slide-enter-active, .slide-leave-active{
-    transition: all 0.3s}
+@import "@/assets/css/variable.scss";
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s;
+}
 
-  .slide-enter, .slide-leave-to{
-    transform: translate3d(100%, 0, 0)}
+.slide-enter,
+.slide-leave-to {
+  transform: translate3d(100%, 0, 0);
+}
 </style>
