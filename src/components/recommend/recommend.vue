@@ -115,7 +115,10 @@ export default {
     },
     switchItem(index) {
       this.Index = index;
-      this.$refs.scroll.refresh();
+      setTimeout(() => {
+          this.$refs.scroll.refresh();
+      },20)
+      
     },
     //处理字符串
     // descriptionSlice(cont) {
