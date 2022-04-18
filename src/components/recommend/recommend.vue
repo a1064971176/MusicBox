@@ -15,18 +15,13 @@
         <div class="recommend-list" v-if="Index == 0">
           <!-- <h1 class="list-title">热门歌单推荐</h1> -->
           <ul class="items">
-            <li
-              v-for="(item, index) in discList"
-              :key="index"
-              class="item"
-              @click="selectItem(item)"
-            >
+            <li v-for="(item, index) in discList" :key="index" class="item" @click="selectItem(item)">
               <div class="icon">
-                <img v-lazy="item.img" alt width="100%" />
+                <img v-lazy="item.picUrl+'?param=500y500'" alt width="100%" />
               </div>
               <div class="text">
                 <h2 class="name">{{item.name}}</h2>
-                <p class="desc">{{item.info}}</p>
+                <p class="desc">{{item.copywriter}}</p>
               </div>
             </li>
           </ul>
@@ -34,18 +29,13 @@
         <div class="recommend-list" v-if="Index == 1">
           <!-- <h1 class="list-title">主播电台</h1> -->
           <ul class="items">
-            <li
-              v-for="(item, index) in radiolist"
-              :key="index"
-              class="item"
-              @click="selectRadioItem(item)"
-            >
+            <li v-for="(item, index) in radiolist" :key="index" class="item" @click="selectRadioItem(item)">
               <div class="icon">
-                <img v-lazy="item.pic" alt width="100%" />
+                <img v-lazy="item.picUrl+'?param=500y500'" alt width="100%" />
               </div>
               <div class="text">
-                <h2 class="name">{{item.artist}}</h2>
-                <p class="desc">{{item.album}}</p>
+                <h2 class="name">{{item.name}}</h2>
+                <p class="desc">{{item.copywriter}}</p>
               </div>
             </li>
           </ul>
@@ -60,65 +50,64 @@
 </template>
 
 <script>
-import Loading from "@/base/loading/loading";
-import Scroll from "@/base/scroll/scroll";
+import Loading from '@/base/loading/loading'
+import Scroll from '@/base/scroll/scroll'
 import {
   getRecommend,
   getDiscList,
   getRadioList,
   getSong
-} from "@/service/getData.js";
-import Slider from "@/base/slider/slider";
-import { playlistMixin } from "@/assets/js/mixin.js";
-import { mapMutations, mapActions } from "vuex";
-import Switches from "@/base/switches/switches.vue";
+} from '@/service/getData.js'
+import Slider from '@/base/slider/slider'
+import { playlistMixin } from '@/assets/js/mixin.js'
+import { mapMutations, mapActions } from 'vuex'
+import Switches from '@/base/switches/switches.vue'
 export default {
   mixins: [playlistMixin],
   data() {
     return {
       Index: 0,
-      switches: [{ name: "热门歌单推荐" }, { name: "主播电台" }],
+      switches: [{ name: '热门歌单推荐' }, { name: '主播电台' }],
       banners: [],
       discList: [],
       radiolist: [],
-      reqId: "d67e44e0-daa1-11e9-9f14-cf8c3cf14acf"
-    };
+      reqId: 'd67e44e0-daa1-11e9-9f14-cf8c3cf14acf'
+    }
   },
   created() {
-    this._getRecommend();
-    this._getDiscList();
-    this._getRadioList();
+    this._getRecommend()
+    this._getDiscList()
+    this._getRadioList()
   },
   methods: {
     handlePlaylist(playlist) {
-      const bottom = playlist.length > 0 ? "60px" : "";
+      const bottom = playlist.length > 0 ? '60px' : ''
 
-      this.$refs.recommend.style.bottom = bottom;
-      this.$refs.scroll.refresh();
+      this.$refs.recommend.style.bottom = bottom
+      this.$refs.scroll.refresh()
     },
     selectItem(item) {
       // console.log(item)
-      this.setDisc(item);
-      this.$router.push(`/recommend/${item.id}`);
+      this.setDisc(item)
+      this.$router.push(`/recommend/${item.id}`)
     },
     selectRadioItem(item) {
       let data = {
         mid: item.rid,
         reqId: this.reqId
-      };
+      }
 
       getSong(data).then(res => {
         if (res.data.code === 200) {
-          this.insertSong(res.data.data);
+          this.insertSong(res.data.data)
         }
-      });
+      })
     },
     switchItem(index) {
-      this.Index = index;
+      this.Index = index
       setTimeout(() => {
-          this.$refs.scroll.refresh();
-      },20)
-      
+        this.$refs.scroll.refresh()
+      }, 20)
     },
     //处理字符串
     // descriptionSlice(cont) {
@@ -132,52 +121,54 @@ export default {
     //获取banner
     _getRecommend() {
       let data = {
-        reqId: this.reqId
-      };
+        type: 1 // 0: pc 1: android 2: iphone 3: ipad
+      }
       getRecommend(data).then(res => {
         if (res.data.code === 200) {
-          this.banners = res.data.data;
-          this.reqId = res.data.reqId;
+          this.banners = res.data.banners
+          // this.reqId = res.data.reqId
         }
-      });
+      })
     },
 
     //获取每日推荐
     _getDiscList() {
       let data = {
-        loginUid: 0,
-        reqId: this.reqId
-      };
+        limit: 30
+        // reqId: this.reqId/
+      }
+      // return
       getDiscList(data).then(res => {
         if (res.data.code === 200) {
-          this.discList = res.data.data.list;
-          this.reqId = res.data.reqId;
+          this.discList = res.data.result
+          // this.reqId = res.data.reqId
         }
-      });
+      })
     },
     //获取主播电台
     _getRadioList() {
       let data = {
+        limit: 30
         // loginUid:0,
-        reqId: this.reqId
-      };
+        // reqId: this.reqId
+      }
       getRadioList(data).then(res => {
         if (res.data.code === 200) {
-          this.radiolist = res.data.data.albumList;
-          this.reqId = res.data.reqId;
+          this.radiolist = res.data.djRadios
+          // this.reqId = res.data.reqId
         }
-      });
+      })
     },
 
     //
     loadImage() {
       if (!this.checkloaded) {
-        this.$refs.scroll.refresh();
-        this.checkloaded = true;
+        this.$refs.scroll.refresh()
+        this.checkloaded = true
       }
     },
-    ...mapActions(["insertSong"]),
-    ...mapMutations(["setDisc"])
+    ...mapActions(['insertSong']),
+    ...mapMutations(['setDisc'])
   },
   components: {
     Slider,
@@ -185,12 +176,12 @@ export default {
     Loading,
     Switches
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/css/variable.scss";
-@import "@/assets/css/mixin.scss";
+@import '@/assets/css/variable.scss';
+@import '@/assets/css/mixin.scss';
 
 .recommend {
   position: fixed;

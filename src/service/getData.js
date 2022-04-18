@@ -1,9 +1,9 @@
 import axios from "@/axios.js";
 //获取推荐页banner
-export const getRecommend = (data) => axios.get('/api/www/banner/index/bannerList',{params: {...data}})
+export const getRecommend = (data) => axios.get('/banner',{params: {...data}})
 
-//获取每日推荐
-export const getDiscList = (data) => axios.get('/api/www/rcm/index/playlist',{params: {...data}})
+//获取推荐歌单
+export const getDiscList = (data) => axios.get('/personalized',{params: {...data}})
 //获取推荐详情
 export const getSongList=(data)=>axios.get('/api/www/playlist/playListInfo',{params:{...data}})
 //获取歌手列表
@@ -25,6 +25,6 @@ export const getHotSearch=(data)=>axios.get('/api/www/search/searchKey', {params
 export const search=(data)=>axios.get('/api/www/search/searchMusicBykeyWord',{params:{...data}})
 //获取歌曲详情
 export const getSong = (data) => axios.get('/api/www/music/musicInfo',{params:{...data}})
-//获取主播电台
-export const getRadioList = (data) => axios.get('/api/www/radio/index/radioList',{params:{...data}})
+//获取热门电台
+export const getRadioList = (data) => axios.get('/dj/hot',{params:{...data}})
 
