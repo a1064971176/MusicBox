@@ -7,18 +7,18 @@
         </div>
         <div class="content">
           <h2 class="name">{{song.name}}</h2>
-          <p class="desc">{{song.artist}}</p>
+          <p class="desc">{{desc(song)}}</p>
         </div>
       </li>
       <li>
-          <loading v-show="songs.length&&showMore"></loading>
+        <loading v-show="songs.length&&showMore"></loading>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import Loading from "@/base/loading/loading";
+import Loading from '@/base/loading/loading'
 export default {
   props: {
     songs: {
@@ -29,46 +29,46 @@ export default {
       type: Boolean,
       default: false
     },
-     showMore:{
-        type:Boolean,
-        default:false
-      }
+    showMore: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     selectItem(list, index) {
-      this.$emit("select", { list, index });
+      this.$emit('select', { list, index })
     },
 
     //处理字符串(数组累加)
-    // desc(song) {
-    //   return song.ar
-    //     .map(val => val.name)
-    //     .reduce((a, b) => {
-    //       return a + " - " + b;
-    //     });
-    // },
+    desc(song) {
+      return song.ar
+        .map(val => val.name)
+        .reduce((a, b) => {
+          return a + ' - ' + b
+        })
+    },
     getRankCls(index) {
       if (index <= 2) {
-        return `icon icon${index}`;
+        return `icon icon${index}`
       } else {
-        return "text";
+        return 'text'
       }
     },
     getRankText(index) {
       if (index > 2) {
-        return index + 1;
+        return index + 1
       }
     }
   },
-  components:{
+  components: {
     Loading
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/css/variable.scss";
-@import "@/assets/css/mixin.scss";
+@import '@/assets/css/variable.scss';
+@import '@/assets/css/mixin.scss';
 
 .song-list {
   .item {
@@ -89,13 +89,13 @@ export default {
       height: 24px;
       background-size: 25px 24px;
       &.icon0 {
-        @include bg-image("first");
+        @include bg-image('first');
       }
       &.icon1 {
-        @include bg-image("second");
+        @include bg-image('second');
       }
       &.icon2 {
-        @include bg-image("third");
+        @include bg-image('third');
       }
       .text {
         color: $color-theme;

@@ -1,4 +1,4 @@
-import { getMusic } from "@/service/getData";
+import { getSong } from "@/service/getData";
 import { playMode } from "@/assets/js/config.js";
 import { shuffle } from "@/assets/js/util.js";
 import { saveSearch,deleteSearch,clearSearch,savePlay,saveFavorite,deleteFavorite } from "@/assets/js/cache.js";
@@ -6,7 +6,7 @@ import { saveSearch,deleteSearch,clearSearch,savePlay,saveFavorite,deleteFavorit
 
 function findIndex(list, song) {
   return list.findIndex(item => {
-    return item.rid === song.rid;
+    return item.id === song.id;
   });
 }
 export const selectPlay = ({ commit, state }, { list, index }) => {
