@@ -28,7 +28,7 @@
             <div class="lyric-wrapper">
               <div v-if="currentLyric">
                 <p ref="lyricLine" class="text" :class="{'current':currentLineNume===index}"
-                  v-for="(line,index) in currentLyric.lines" :key="index">{{line.text}}</p>
+                  v-for="(line,index) in currentLyric.lines" :key="index">{{line.txt}}</p>
               </div>
             </div>
           </scroll>

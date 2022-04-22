@@ -16,7 +16,7 @@
             <li
               class="item"
               v-for="(item, index) in sequenceList"
-              :key="item.rid"
+              :key="item.id"
               @click="selectItem(item,index)"
               ref="lisrItem"
             >

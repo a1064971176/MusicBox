@@ -1,0 +1,26 @@
+diff --git a/node_modules/lyric-parser/dist/lyric.js b/node_modules/lyric-parser/dist/lyric.js
+index cf893e5..d117858 100644
+--- a/node_modules/lyric-parser/dist/lyric.js
++++ b/node_modules/lyric-parser/dist/lyric.js
+@@ -479,7 +479,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
+             var txt = line.replace(timeExp, '').trim();
+             if (txt) {
+               this.lines.push({
+-                time: result[1] * 60 * 1000 + result[2] * 1000 + (result[3] || 0) * 10,
++                time: result[1] * 60 * 1000 + result[2] * 1000 + (result[3] || 0) * 1,
+                 txt: txt
+               });
+             }
+diff --git a/node_modules/lyric-parser/src/index.js b/node_modules/lyric-parser/src/index.js
+index e7fe05a..f0fc3cf 100644
+--- a/node_modules/lyric-parser/src/index.js
++++ b/node_modules/lyric-parser/src/index.js
+@@ -48,7 +48,7 @@ export default class Lyric {
+         const txt = line.replace(timeExp, '').trim()
+         if (txt) {
+           this.lines.push({
+-            time: result[1] * 60 * 1000 + result[2] * 1000 + (result[3] || 0) * 10,
++            time: result[1] * 60 * 1000 + result[2] * 1000 + (result[3] || 0) * 1,
+             txt
+           })
+         }
