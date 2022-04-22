@@ -11,7 +11,7 @@ export const getSingerList = (data) => axios.get('/top/artists',{params:{...data
 //获取排行榜
 export const getTopList = (data) => axios.get('/api/www/bang/bang/bangMenu',{params:{...data}})
 //获取歌手单曲
-export const _setSinger = (data) => axios.get('/artist/songs', {params:{...data}})
+export const _setSinger = (data) => axios.get('/artist/top/song', {params:{...data}})
 //获取歌曲url
 export const getMusic = (data) => axios.get('/url', {params: {...data}})
 //获取歌词
